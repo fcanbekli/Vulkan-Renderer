@@ -15,6 +15,10 @@ set(CompilerFlags
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(INC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
+set(HEADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../Hypatia/include/headers")
+set(VENDOR_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../Hypatia/include/vendor")
+include_directories( ${INC_DIR} ${HEADERS_DIR} ${VENDOR_DIR})
+
 #Add the given directories to those the compiler uses to search for include files.
 include_directories( ${INC_DIR} )
 
