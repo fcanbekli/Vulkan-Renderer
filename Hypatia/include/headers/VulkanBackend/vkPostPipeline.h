@@ -1,14 +1,17 @@
 ﻿#pragma once
-#include "VulkanBackend/vkIPipeline.h"
-
+#include "PipelineDesc.h"
 namespace hyp_vlk
 {
 	namespace hyp_backend {
-		class PostPipeline : public IPipeline {
+		using namespace hypatia;
+
+		class PostPipeline{
 		public:
-			PostPipeline(hypatia::PIPELINE_POSTPROCESS_DESC* postProcessDesc) { this->postProcessDesc = postProcessDesc; }
-			hypatia::PIPELINE_POSTPROCESS_DESC* postProcessDesc;
-			void exec() override { printf("Post Pipeline Worked \n"); }
+			PostPipeline(std::shared_ptr<PIPELINE_POSTPROCESS_DESC> postProcessDesc) { this->m_postProcessDesc = postProcessDesc; }
+
+			std::shared_ptr<PIPELINE_POSTPROCESS_DESC> m_postProcessDesc;
+
+			void Exec() { printf("Post Pipeline Worked \n"); }
 		};
 	}
 }

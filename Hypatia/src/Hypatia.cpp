@@ -1,18 +1,15 @@
 ﻿#include "Hypatia.h"
 
 namespace hypatia {
-	void Hypatia::render()
+	void Hypatia::Render()
 	{
-		renderer.render();
+		m_renderer.Render();
 	}
 
-	hpyStatus Hypatia::createRenderer(PIPELINE_COMPUTE_DESC* computeDesc, PIPELINE_DRAW_DESC* drawDesc, PIPELINE_POSTPROCESS_DESC* postProcessDecs, PIPELINE_UI_DESC* uiDesc)
+	hpyStatus Hypatia::CreateRenderer(PIPELINE_DESC pipelineDesc)
 	{
-		renderer.syncRendererOptions(computeDesc, drawDesc, postProcessDecs, uiDesc);
-		if (renderer.computeDesc == nullptr) {
-			return hpyError;
-		}
-		return hpySuccess;
+		m_renderer.SyncRendererOptions(pipelineDesc);
+		return khpySuccess;
 	}
 
 }

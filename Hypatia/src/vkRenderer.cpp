@@ -1,32 +1,39 @@
 #include "VulkanBackend/vkRenderer.h"
 
-
-void hyp_vlk::hyp_backend::RendererBackend::initRenderer()
+namespace hyp_vlk
 {
-	computePipeline = new ComputePipeline(computeDesc);
-	drawPipeline = new DrawPipeline(drawDesc);
-	uiPipeline = new UIPipeline(uiDesc);
-	postPipeline = new PostPipeline(postProcessDesc);
+	namespace hyp_backend {
+	
+		void RendererBackend::InitRenderer()
+		{
+			m_computePipeline = std::make_shared<ComputePipeline>(m_pipelineDesc.computeDesc);
+			m_drawPipeline = std::make_shared<DrawPipeline>(m_pipelineDesc.drawDesc);
+			m_uiPipeline = std::make_shared<UIPipeline>(m_pipelineDesc.uiDesc);
+			m_postPipeline = std::make_shared<PostPipeline>(m_pipelineDesc.postProcessDesc);
+
+			m_deviceManager.CreateDevice();
+		}
+
+		void RendererBackend::Render()
+		{
+
+			m_computePipeline->Exec();
+			m_drawPipeline->Exec();
+			m_uiPipeline->Exec();
+			m_postPipeline->Exec();
+
+			printf("FRAME DONE\n");
+
+		}
+
+		void RendererBackend::SyncRendererOptions(hypatia::PIPELINE_DESC pipelineDesc)
+		{
+			this->m_pipelineDesc = pipelineDesc;
+		}
+	}
 }
 
-void hyp_vlk::hyp_backend::RendererBackend::render()
-{
-	computePipeline->exec();
-	drawPipeline->exec();
-	uiPipeline->exec();
-	postPipeline->exec();
 
-	printf("FRAME DONE\n");
-
-}
-
-void hyp_vlk::hyp_backend::RendererBackend::syncRendererOptions(hypatia::PIPELINE_COMPUTE_DESC* computeDesc, hypatia::PIPELINE_DRAW_DESC* drawDesc, hypatia::PIPELINE_POSTPROCESS_DESC* postProcessDecs, hypatia::PIPELINE_UI_DESC* uiDesc)
-{
-	this->computeDesc = computeDesc;
-	this->drawDesc = drawDesc;
-	this->postProcessDesc = postProcessDecs;
-	this->uiDesc = uiDesc;
-}
 
 /*
 
@@ -63,7 +70,6 @@ bool checkValidationLayerSupport() {
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
 	std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
-
 	return VK_FALSE;
 }
 VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger) {

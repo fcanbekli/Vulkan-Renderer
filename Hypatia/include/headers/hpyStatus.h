@@ -1,14 +1,11 @@
 ﻿#pragma once
-
-
 namespace hypatia
 {
 	enum hpyStatus
 	{
-		hpySuccess = 0,
-		hpyError = 1,
+		khpySuccess = 0,
+		khpyError = 1,
 	};
-
 
 	typedef enum hpyStatus hpyStatus_t;
 }

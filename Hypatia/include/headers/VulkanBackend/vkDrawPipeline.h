@@ -1,16 +1,18 @@
 ﻿#pragma once
-#include "VulkanBackend/vkIPipeline.h"
+#include "PipelineDesc.h"
+
 namespace hyp_vlk
 {
 	namespace hyp_backend {
-		class DrawPipeline : public IPipeline {
-		public:
-			DrawPipeline(hypatia::PIPELINE_DRAW_DESC* drawDesc) { this->drawDesc = drawDesc; }
-			hypatia::PIPELINE_DRAW_DESC* drawDesc;
+		using namespace hypatia;
 
-			void exec() override {
-				printf("Draw Pipeline Worked \n");
-			}
+		class DrawPipeline{
+		public:
+			DrawPipeline(std::shared_ptr<PIPELINE_DRAW_DESC> drawDesc) { this->m_drawDesc = drawDesc; }
+
+			std::shared_ptr<PIPELINE_DRAW_DESC> m_drawDesc;
+
+			void Exec() { printf("Draw Pipeline Worked \n"); }
 		};
 	}
 }

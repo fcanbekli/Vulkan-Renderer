@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include <stdio.h>
 #include "PipelineDesc.h"
-#include "Base.h"
 #include <hpyStatus.h>
 #define USE_VULKAN = 1
 
@@ -22,10 +21,10 @@ namespace hypatia {
 	class Hypatia {
 public:
 	Hypatia() {};
-	hyp_backend::RendererBackend renderer;
+	hyp_backend::RendererBackend m_renderer;
 
-	void render();
+	void Render();
 
-	hpyStatus createRenderer(PIPELINE_COMPUTE_DESC* computeDesc, PIPELINE_DRAW_DESC* drawDesc, PIPELINE_POSTPROCESS_DESC* postProcessDecs, PIPELINE_UI_DESC* uiDesc);
+	hpyStatus CreateRenderer(PIPELINE_DESC pipelineDesc);
 };
 }

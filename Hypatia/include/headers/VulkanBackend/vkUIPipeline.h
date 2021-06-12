@@ -1,13 +1,16 @@
 ﻿#pragma once
-#include "VulkanBackend/vkIPipeline.h"
+#include "PipelineDesc.h"
 namespace hyp_vlk
 {
 	namespace hyp_backend {
-		class UIPipeline : public IPipeline {
+		using namespace hypatia;
+		class UIPipeline{
 		public:
-			UIPipeline(hypatia::PIPELINE_UI_DESC* uiDesc) { this->uiDesc = uiDesc; }
-			hypatia::PIPELINE_UI_DESC* uiDesc;
-			void exec() override { printf("UI Pipeline Worked \n"); };
+			UIPipeline(std::shared_ptr<PIPELINE_UI_DESC> uiDesc) { this->m_uiDesc = uiDesc; }
+
+			std::shared_ptr<PIPELINE_UI_DESC> m_uiDesc;
+
+			void Exec() { printf("UI Pipeline Worked \n"); };
 		};
 	}
 }

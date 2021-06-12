@@ -1,15 +1,17 @@
 ﻿#pragma once
-#include "VulkanBackend/vkIPipeline.h"
-
+#include "PipelineDesc.h"
 namespace hyp_vlk
 {
 	namespace hyp_backend {
+		using namespace hypatia;
 
-		class ComputePipeline : public IPipeline {
+		class ComputePipeline{
 		public:
-			ComputePipeline(hypatia::PIPELINE_COMPUTE_DESC* computeDesc) { this->computeDesc = computeDesc; }
-			hypatia::PIPELINE_COMPUTE_DESC* computeDesc;
-			void exec() override { printf("Compute Pipeline Worked \n");}
+			ComputePipeline(std::shared_ptr<PIPELINE_COMPUTE_DESC> computeDesc) { this->m_computeDesc = computeDesc; }
+
+			std::shared_ptr<PIPELINE_COMPUTE_DESC> m_computeDesc;
+
+			void Exec() { printf("Compute Pipeline Worked \n");}
 		};
 	}
 }
