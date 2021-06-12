@@ -26,7 +26,7 @@ FILE(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp" "${INC_DIR}/*.cpp")
 FILE(GLOB_RECURSE INCLUDES "${INC_DIR}/*.h" "${INC_DIR}/*.hpp")
 
 
-add_executable(Sandbox ${SOURCES} ${INCLUDES})
+add_executable(Sandbox WIN32 ${SOURCES} ${INCLUDES})
 
 if(MSVC)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
