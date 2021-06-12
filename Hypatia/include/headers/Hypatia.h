@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include <stdio.h>
 #include "PipelineDesc.h"
 #include <hpyStatus.h>
+
 #define USE_VULKAN = 1
 
 #ifdef USE_GL

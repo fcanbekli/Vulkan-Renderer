@@ -1,17 +1,11 @@
 ﻿#pragma once
-#include <vulkan/vulkan_core.h>
-#include <stdexcept>
-#include <cstdlib>
-#include <vector>
-#include <iostream>
-#include <optional>
 #include "VulkanBackend/vkComputePipeline.h"
 #include "VulkanBackend/vkUIPipeline.h"
 #include "VulkanBackend/vkPostPipeline.h"
 #include "VulkanBackend/vkDrawPipeline.h"
-#include "PipelineDesc.h"
 #include "VulkanBackend/vkDeviceManager.h"
-#include <memory>
+#include "PipelineDesc.h"
+
 namespace hyp_vlk
 {
 	namespace hyp_backend {

@@ -1,5 +1,6 @@
 ﻿#include "Hypatia.h"
 #include <memory>
+
 int main()
 {
 	hypatia::Hypatia* hypatiaRenderer = new hypatia::Hypatia();

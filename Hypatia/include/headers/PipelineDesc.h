@@ -1,12 +1,8 @@
 ﻿#pragma once
 #include "PipelineDesc.h"
-#include <memory>
+
 namespace hypatia
 {
-
-
-
-
 	typedef struct PIPELINE_DRAW_DESC
 	{
 	

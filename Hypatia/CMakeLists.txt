@@ -31,7 +31,7 @@ FILE(GLOB_RECURSE INCLUDES "${HEADERS_DIR}/*.h")
 
 
 add_library(Hypatia STATIC ${SOURCES} ${INCLUDES})
-
+target_precompile_headers(Hypatia PUBLIC "${HEADERS_DIR}/pch.h")
 
 if(MSVC)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")

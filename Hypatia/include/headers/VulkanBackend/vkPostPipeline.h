@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "PipelineDesc.h"
+
 namespace hyp_vlk
 {
 	namespace hyp_backend {
