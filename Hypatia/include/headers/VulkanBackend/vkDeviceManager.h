@@ -1,9 +1,6 @@
 ﻿#pragma once
-#include <vulkan/vulkan_core.h>
 #include "VulkanBackend/vkValidationLayerManager.h"
-#include <stdexcept>
-#include <optional>
-#include <vector>
+
 namespace hyp_vlk
 {
 	namespace hyp_backend {
