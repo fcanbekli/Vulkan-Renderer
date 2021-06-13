@@ -16,7 +16,6 @@ namespace hyp_vlk
 
 		void RendererBackend::Render()
 		{
-
 			m_computePipeline->Exec();
 			m_drawPipeline->Exec();
 			m_uiPipeline->Exec();

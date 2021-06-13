@@ -19,10 +19,12 @@ namespace hyp_vlk
 		private:
 			//Vulkan Instance
 			VkInstance m_instance;
+			std::vector<const char*> extensions;
 
 			//Devices
 			VkPhysicalDevice m_physicalDevice = VK_NULL_HANDLE;
 			VkDevice m_device;
+
 
 			//Queues
 			VkQueue m_graphicsQueue;
@@ -39,7 +41,7 @@ namespace hyp_vlk
 			DeviceManager(){}
 			VkPhysicalDevice GetPhysicalDevice() { return m_physicalDevice; }
 			VkDevice GetLogicalDevice() { return m_device; }
-
+			void setExtension(std::vector<const char*> extensions) { this->extensions = extensions; };
 			void CreateDevice();
 
 		};
