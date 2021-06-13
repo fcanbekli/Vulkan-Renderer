@@ -12,6 +12,7 @@ namespace hyp_vlk
 			m_postPipeline = std::make_shared<PostPipeline>(m_pipelineDesc.postProcessDesc);
 
 			m_deviceManager.CreateDevice();
+			m_presentationManager.CreateWin32Surface(m_deviceManager.GetInstance(), m_drawPipeline->m_drawDesc->hwnd, m_drawPipeline->m_drawDesc->hInstance);
 		}
 
 		void RendererBackend::Render()
@@ -22,7 +23,6 @@ namespace hyp_vlk
 			m_postPipeline->Exec();
 
 			printf("FRAME DONE\n");
-
 		}
 
 		void RendererBackend::SyncRendererOptions(hypatia::PIPELINE_DESC pipelineDesc)

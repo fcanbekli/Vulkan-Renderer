@@ -19,6 +19,9 @@ namespace hyp_vlk
 			void Render();
 			void SyncRendererOptions(hypatia::PIPELINE_DESC pipelineDesc);
 
+			
+		private:
+			HWND m_hWindow;
 			std::shared_ptr<DrawPipeline> m_drawPipeline;
 			std::shared_ptr<UIPipeline> m_uiPipeline;
 			std::shared_ptr<ComputePipeline> m_computePipeline;
@@ -26,12 +29,9 @@ namespace hyp_vlk
 
 			DeviceManager m_deviceManager;
 			ValidationLayerManager m_validationManager;
-			PresentationManager m_PresentationManager;
-
-
+			PresentationManager m_presentationManager;
 
 			hypatia::PIPELINE_DESC m_pipelineDesc;
-
 		};
 	}
 }

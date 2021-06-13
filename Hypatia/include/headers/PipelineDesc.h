@@ -5,7 +5,9 @@ namespace hypatia
 {
 	typedef struct PIPELINE_DRAW_DESC
 	{
-	//TODO:() Window extension 
+		HWND hwnd;
+		HINSTANCE hInstance;
+		std::vector<const char*> extensions;
 	}PIPELINE_DRAW_DESC;
 	
 	typedef struct PIPELINE_COMPUTE_DESC

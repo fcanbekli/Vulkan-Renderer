@@ -4,6 +4,19 @@
 namespace hyp_vlk
 {
 	namespace hyp_backend {
+		std::vector<const char*> getRequiredExtensions() {
+			uint32_t glfwExtensionCount = 0;
+			const char** glfwExtensions;
+			glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+			std::vector<const char*> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
+
+			//if (enableValidationLayers) {
+			//	extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+			//}
+
+			return extensions;
+		}
 
 		void DeviceManager::CreateInstance()
 		{
@@ -19,10 +32,10 @@ namespace hyp_vlk
 			createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 			createInfo.pApplicationInfo = &appInfo;
 
-	
+			//TODO:() Refactor extensions
+			extensions = getRequiredExtensions();
 			createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
 			createInfo.ppEnabledExtensionNames = extensions.data();
-
 			
 			createInfo.enabledLayerCount = 0;
 

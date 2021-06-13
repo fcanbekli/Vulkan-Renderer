@@ -25,7 +25,6 @@ namespace hyp_vlk
 			VkPhysicalDevice m_physicalDevice = VK_NULL_HANDLE;
 			VkDevice m_device;
 
-
 			//Queues
 			VkQueue m_graphicsQueue;
 
@@ -39,9 +38,10 @@ namespace hyp_vlk
 			QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 		public:
 			DeviceManager(){}
+			VkInstance GetInstance() { return m_instance; }
 			VkPhysicalDevice GetPhysicalDevice() { return m_physicalDevice; }
 			VkDevice GetLogicalDevice() { return m_device; }
-			void setExtension(std::vector<const char*> extensions) { this->extensions = extensions; };
+			void SetExtension(std::vector<const char*> extensions) { this->extensions = extensions; };
 			void CreateDevice();
 
 		};
