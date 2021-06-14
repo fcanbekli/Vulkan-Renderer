@@ -6,6 +6,7 @@
 #include "VulkanBackend/vkDeviceManager.h"
 #include "VulkanBackend/vkValidationLayerManager.h"
 #include "VulkanBackend/vkPresentationManager.h"
+#include "VulkanBackend/vkData.h"
 #include "PipelineDesc.h"
 
 namespace hyp_vlk
@@ -27,7 +28,7 @@ namespace hyp_vlk
 			std::shared_ptr<ComputePipeline> m_computePipeline;
 			std::shared_ptr<PostPipeline> m_postPipeline;
 
-			DeviceManager m_deviceManager;
+			DeviceSystem m_deviceManager;
 			ValidationLayerManager m_validationManager;
 			PresentationManager m_presentationManager;
 

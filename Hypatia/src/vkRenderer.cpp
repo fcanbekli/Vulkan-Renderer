@@ -11,8 +11,11 @@ namespace hyp_vlk
 			m_uiPipeline = std::make_shared<UIPipeline>(m_pipelineDesc.uiDesc);
 			m_postPipeline = std::make_shared<PostPipeline>(m_pipelineDesc.postProcessDesc);
 
-			m_deviceManager.CreateDevice();
-			m_presentationManager.CreateWin32Surface(m_deviceManager.GetInstance(), m_drawPipeline->m_drawDesc->hwnd, m_drawPipeline->m_drawDesc->hInstance);
+			m_deviceManager.CreateInstance(device_t.instance, device_t.extensions);
+			m_deviceManager.PickPhysicalDevice(device_t.instance, device_t.physicalDevice);
+			m_deviceManager.CreateLogicalDevice(device_t.physicalDevice, device_t.device);
+
+			m_presentationManager.CreateWin32Surface(device_t.instance, m_drawPipeline->m_drawDesc->hwnd, m_drawPipeline->m_drawDesc->hInstance);
 		}
 
 		void RendererBackend::Render()

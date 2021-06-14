@@ -1,24 +1,10 @@
-﻿#pragma once
-#include "VulkanBackend/vkDeviceManager.h"
+﻿#include "VulkanBackend/vkDeviceManager.h"
 
 namespace hyp_vlk
 {
 	namespace hyp_backend {
-		std::vector<const char*> getRequiredExtensions() {
-			uint32_t glfwExtensionCount = 0;
-			const char** glfwExtensions;
-			glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 
-			std::vector<const char*> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
-
-			//if (enableValidationLayers) {
-			//	extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-			//}
-
-			return extensions;
-		}
-
-		void DeviceManager::CreateInstance()
+		void DeviceSystem::CreateInstance(VkInstance &instance, std::vector<const char*> &extensions)
 		{
 			VkApplicationInfo appInfo{};
 			appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -33,48 +19,44 @@ namespace hyp_vlk
 			createInfo.pApplicationInfo = &appInfo;
 
 			//TODO:() Refactor extensions
-			extensions = getRequiredExtensions();
 			createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
 			createInfo.ppEnabledExtensionNames = extensions.data();
-			
 			createInfo.enabledLayerCount = 0;
-
 			createInfo.pNext = nullptr;
 			
-
-			if (vkCreateInstance(&createInfo, nullptr, &m_instance) != VK_SUCCESS) {
+			if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
 				throw std::runtime_error("failed to create instance!");
 			}
 		}
 
-		void DeviceManager::PickPhysicalDevice()
+		void DeviceSystem::PickPhysicalDevice(VkInstance &instance, VkPhysicalDevice &physicalDevice)
 		{
 			uint32_t deviceCount = 0;
-			vkEnumeratePhysicalDevices(m_instance, &deviceCount, nullptr);
+			vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
 
 			if (deviceCount == 0) {
 				throw std::runtime_error("failed to find GPUs with Vulkan support!");
 			}
 
 			std::vector<VkPhysicalDevice> devices(deviceCount);
-			vkEnumeratePhysicalDevices(m_instance, &deviceCount, devices.data());
+			vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
 			for (const auto& device : devices) {
 				if (isDeviceSuitable(device)) {
-					m_physicalDevice = device;
+					physicalDevice = device;
 					break;
 				}
 			}
 
-			if (m_physicalDevice == VK_NULL_HANDLE) {
+			if (physicalDevice == VK_NULL_HANDLE) {
 				throw std::runtime_error("failed to find a suitable GPU!");
 			}
 
 		}
 
-		void DeviceManager::CreateLogicalDevice()
+		void DeviceSystem::CreateLogicalDevice(VkPhysicalDevice &physicalDevice, VkDevice &device)
 		{
-			QueueFamilyIndices indices = findQueueFamilies(m_physicalDevice);
+			QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
 
 			VkDeviceQueueCreateInfo queueCreateInfo{};
 			queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
@@ -104,26 +86,22 @@ namespace hyp_vlk
 // 				createInfo.enabledLayerCount = 0;
 // 			}
 
-			if (vkCreateDevice(m_physicalDevice, &createInfo, nullptr, &m_device) != VK_SUCCESS) {
+			if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS) {
 				throw std::runtime_error("failed to create logical device!");
 			}
 
-			vkGetDeviceQueue(m_device, indices.graphicsFamily.value(), 0, &m_graphicsQueue);
+			vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &m_graphicsQueue);
 		}
 
-		bool DeviceManager::isDeviceSuitable(VkPhysicalDevice device)
+		bool DeviceSystem::isDeviceSuitable(VkPhysicalDevice device)
 		{
 			QueueFamilyIndices indices = findQueueFamilies(device);
 			return indices.isComplete();
 		}
 
-		void DeviceManager::CreateDevice() {
-			CreateInstance();
-			PickPhysicalDevice();
-			CreateLogicalDevice();
-		}
+		
 
-		QueueFamilyIndices DeviceManager::findQueueFamilies(VkPhysicalDevice device) {
+		QueueFamilyIndices DeviceSystem::findQueueFamilies(VkPhysicalDevice device) {
 			QueueFamilyIndices indices;
 
 			uint32_t queueFamilyCount = 0;

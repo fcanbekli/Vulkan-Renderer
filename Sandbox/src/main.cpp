@@ -1,5 +1,21 @@
 #include "Hypatia.h"
 
+
+std::vector<const char*> getRequiredExtensions() {
+	uint32_t glfwExtensionCount = 0;
+	const char** glfwExtensions;
+	glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+	std::vector<const char*> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
+
+	//if (enableValidationLayers) {
+	//	extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+	//}
+
+	return extensions;
+}
+
+
 int main()
 {
 	glfwInit();
@@ -21,9 +37,11 @@ int main()
 	auto drawDesc = std::make_shared<hypatia::PIPELINE_DRAW_DESC>();
 	auto uiDesc = std::make_shared<hypatia::PIPELINE_UI_DESC>();
 	auto postProcessDesc = std::make_shared<hypatia::PIPELINE_POSTPROCESS_DESC>();
-
+	//hyp_vlk::hyp_backend::device_t.extensions = getRequiredExtensions();
+	
 	drawDesc->hwnd = glfwGetWin32Window(window);
 	drawDesc->hInstance = GetModuleHandle(nullptr);
+	drawDesc->extensions = getRequiredExtensions();
 
 	hypatia::PIPELINE_DESC pipelineDesc = {};
 	pipelineDesc.drawDesc = drawDesc;

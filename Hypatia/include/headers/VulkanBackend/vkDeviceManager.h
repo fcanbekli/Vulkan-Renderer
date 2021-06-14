@@ -15,35 +15,21 @@ namespace hyp_vlk
 		};
 
 
-		class DeviceManager {
+		class DeviceSystem {
 		private:
-			//Vulkan Instance
-			VkInstance m_instance;
-			std::vector<const char*> extensions;
-
-			//Devices
-			VkPhysicalDevice m_physicalDevice = VK_NULL_HANDLE;
-			VkDevice m_device;
-
 			//Queues
 			VkQueue m_graphicsQueue;
-
 			//ValidationLayer
 			ValidationLayerManager m_validationManager;
 
-			void CreateInstance();
-			void PickPhysicalDevice();
-			void CreateLogicalDevice();
 			bool isDeviceSuitable(VkPhysicalDevice device);
 			QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 		public:
-			DeviceManager(){}
-			VkInstance GetInstance() { return m_instance; }
-			VkPhysicalDevice GetPhysicalDevice() { return m_physicalDevice; }
-			VkDevice GetLogicalDevice() { return m_device; }
-			void SetExtension(std::vector<const char*> extensions) { this->extensions = extensions; };
-			void CreateDevice();
-
+			DeviceSystem(){}
+			void CreateInstance(VkInstance &instance, std::vector<const char*>& extensions);
+			void PickPhysicalDevice(VkInstance &instance, VkPhysicalDevice &physicalDevice);
+			void CreateLogicalDevice(VkPhysicalDevice &physicalDevice, VkDevice &device);
+			
 		};
 	}
 }
