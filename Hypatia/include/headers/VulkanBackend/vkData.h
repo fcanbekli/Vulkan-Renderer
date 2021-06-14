@@ -6,14 +6,20 @@
 namespace hyp_vlk
 {
 	namespace hyp_backend {
-		struct Device {
-			//TODO:()Smart pointer convertion
+		struct DeviceData {
 			VkInstance instance;
 			VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 			VkDevice device;
 			std::vector<const char*> extensions;
 		};
 
-		static Device device_t;
+		struct WindowData {
+			HWND hWindow;
+			HINSTANCE hInstance;
+			VkSurfaceKHR surface;
+		};
+
+		extern DeviceData device_data;
+		extern WindowData surface_data;
 	}
 }

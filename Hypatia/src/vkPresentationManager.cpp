@@ -7,7 +7,7 @@ namespace hyp_vlk
 
 		PresentationManager::PresentationManager() {}
 
-		void PresentationManager::CreateWin32Surface(VkInstance instance, HWND hWindow, HINSTANCE hInstance) {
+		void PresentationManager::CreateWin32Surface(VkInstance &instance, HWND &hWindow, HINSTANCE &hInstance) {
 			VkWin32SurfaceCreateInfoKHR createInfo{};
 			createInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
 			createInfo.hwnd = (HWND)hWindow;

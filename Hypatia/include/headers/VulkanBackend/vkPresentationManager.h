@@ -9,7 +9,7 @@ namespace hyp_vlk
 		public:
 			PresentationManager();
 
-			void CreateWin32Surface(VkInstance instance, HWND hWindow, HINSTANCE hInstance);
+			void CreateWin32Surface(VkInstance& instance, HWND& hWindow, HINSTANCE& hInstance);
 		};
 	}
 } 
