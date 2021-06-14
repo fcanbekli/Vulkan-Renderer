@@ -10,6 +10,7 @@ namespace hyp_vlk
 			VkInstance instance;
 			VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 			VkDevice device;
+			VkQueue graphicsQueue;
 			std::vector<const char*> extensions;
 		};
 

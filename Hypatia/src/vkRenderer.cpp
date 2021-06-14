@@ -17,11 +17,11 @@ namespace hyp_vlk
 			surface_data.hWindow = m_drawPipeline->m_drawDesc->hwnd;
 			//-------------------
 
-			m_deviceManager.CreateInstance(device_data.instance, device_data.extensions);
-			m_deviceManager.PickPhysicalDevice(device_data.instance, device_data.physicalDevice);
-			m_deviceManager.CreateLogicalDevice(device_data.physicalDevice, device_data.device);
-
-			m_presentationManager.CreateWin32Surface(device_data.instance, surface_data.hWindow, surface_data.hInstance);
+			DeviceSystem::CreateInstance(device_data.instance, device_data.extensions);
+			DeviceSystem::PickPhysicalDevice(device_data.instance, device_data.physicalDevice);
+			DeviceSystem::CreateLogicalDevice(device_data.physicalDevice, device_data.device, device_data.graphicsQueue);
+			
+			PresentationSystem::CreateWin32Surface(device_data.instance, surface_data.hWindow, surface_data.hInstance, surface_data.surface);
 		}
 
 		void RendererBackend::Render()

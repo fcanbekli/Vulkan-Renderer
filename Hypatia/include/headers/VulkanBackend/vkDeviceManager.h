@@ -18,17 +18,15 @@ namespace hyp_vlk
 		class DeviceSystem {
 		private:
 			//Queues
-			VkQueue m_graphicsQueue;
 			//ValidationLayer
-			ValidationLayerManager m_validationManager;
 
-			bool isDeviceSuitable(VkPhysicalDevice device);
-			QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+			static bool isDeviceSuitable(VkPhysicalDevice device);
+			static QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 		public:
 			DeviceSystem(){}
-			void CreateInstance(VkInstance &instance, std::vector<const char*>& extensions);
-			void PickPhysicalDevice(VkInstance &instance, VkPhysicalDevice &physicalDevice);
-			void CreateLogicalDevice(VkPhysicalDevice &physicalDevice, VkDevice &device);
+			static void CreateInstance(VkInstance &instance, std::vector<const char*>& extensions);
+			static void PickPhysicalDevice(VkInstance &instance, VkPhysicalDevice &physicalDevice);
+			static void CreateLogicalDevice(VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue);
 			
 		};
 	}

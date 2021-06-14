@@ -3,13 +3,12 @@
 namespace hyp_vlk
 {
 	namespace hyp_backend {
-		class PresentationManager {
-		private:
-			VkSurfaceKHR m_surface;
-		public:
-			PresentationManager();
+		class PresentationSystem {
 
-			void CreateWin32Surface(VkInstance& instance, HWND& hWindow, HINSTANCE& hInstance);
+		public:
+			PresentationSystem();
+
+			static void CreateWin32Surface(VkInstance& instance, HWND& hWindow, HINSTANCE& hInstance, VkSurfaceKHR& surface);
 		};
 	}
 } 

@@ -54,7 +54,7 @@ namespace hyp_vlk
 
 		}
 
-		void DeviceSystem::CreateLogicalDevice(VkPhysicalDevice &physicalDevice, VkDevice &device)
+		void DeviceSystem::CreateLogicalDevice(VkPhysicalDevice &physicalDevice, VkDevice &device, VkQueue& graphicsQueue)
 		{
 			QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
 
@@ -90,7 +90,7 @@ namespace hyp_vlk
 				throw std::runtime_error("failed to create logical device!");
 			}
 
-			vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &m_graphicsQueue);
+			vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
 		}
 
 		bool DeviceSystem::isDeviceSuitable(VkPhysicalDevice device)
