@@ -8,6 +8,8 @@ namespace hypatia
 		HWND hwnd;
 		HINSTANCE hInstance;
 		std::vector<const char*> extensions;
+		int frameBufferWidth;
+		int frameBufferHeight;
 	}PIPELINE_DRAW_DESC;
 	
 	typedef struct PIPELINE_COMPUTE_DESC

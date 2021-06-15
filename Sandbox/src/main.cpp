@@ -37,12 +37,13 @@ int main()
 	auto drawDesc = std::make_shared<hypatia::PIPELINE_DRAW_DESC>();
 	auto uiDesc = std::make_shared<hypatia::PIPELINE_UI_DESC>();
 	auto postProcessDesc = std::make_shared<hypatia::PIPELINE_POSTPROCESS_DESC>();
-	hyp_vlk::hyp_backend::device_data.extensions = getRequiredExtensions();
 
+	hyp_vlk::hyp_backend::device_data.extensions = getRequiredExtensions();
 
 	drawDesc->hwnd = glfwGetWin32Window(window);
 	drawDesc->hInstance = GetModuleHandle(nullptr);
 	drawDesc->extensions = getRequiredExtensions();
+	glfwGetFramebufferSize(window, &drawDesc->frameBufferWidth, &drawDesc->frameBufferHeight);
 
 	hypatia::PIPELINE_DESC pipelineDesc = {};
 	pipelineDesc.drawDesc = drawDesc;
@@ -56,6 +57,8 @@ int main()
 	while (true)
 	{
 		hypatiaRenderer->Render();
+
+		glfwPollEvents();
 	}
 
 }

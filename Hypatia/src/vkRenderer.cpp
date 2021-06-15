@@ -13,15 +13,40 @@ namespace hyp_vlk
 			
 			//-------------------
 			device_data.extensions = m_drawPipeline->m_drawDesc->extensions;
-			surface_data.hInstance = m_drawPipeline->m_drawDesc->hInstance;
-			surface_data.hWindow = m_drawPipeline->m_drawDesc->hwnd;
+			window_data.hInstance = m_drawPipeline->m_drawDesc->hInstance;
+			window_data.hWindow = m_drawPipeline->m_drawDesc->hwnd;
+			window_data.frameBufferWidth = m_drawPipeline->m_drawDesc->frameBufferWidth;
+			window_data.frameBufferHeight= m_drawPipeline->m_drawDesc->frameBufferHeight;
 			//-------------------
 
-			DeviceSystem::CreateInstance(device_data.instance, device_data.extensions);
-			DeviceSystem::PickPhysicalDevice(device_data.instance, device_data.physicalDevice);
-			DeviceSystem::CreateLogicalDevice(device_data.physicalDevice, device_data.device, device_data.graphicsQueue);
+			DeviceSystem::CreateInstance(device_data.instance,
+										 device_data.extensions);
 			
-			PresentationSystem::CreateWin32Surface(device_data.instance, surface_data.hWindow, surface_data.hInstance, surface_data.surface);
+			PresentationSystem::CreateWin32Surface(device_data.instance,
+				window_data.hWindow,
+				window_data.hInstance,
+				window_data.surface);
+			
+			DeviceSystem::PickPhysicalDevice(device_data.instance,
+					                         device_data.physicalDevice);
+
+			
+			DeviceSystem::CreateLogicalDevice(device_data.physicalDevice,
+					                          device_data.device,
+					                          device_data.graphicsQueue,
+											  device_data.presentQueue,
+					                          image_data.deviceExtensions);
+
+			
+			PresentationSystem::CreateSwapChain(device_data.physicalDevice,
+												window_data.surface,
+												device_data.device,
+												image_data.swapChainImageFormat,
+												image_data.swapChainExtent,
+												image_data.swapChainImages,
+												image_data.swapChain);
+
+
 		}
 
 		void RendererBackend::Render()

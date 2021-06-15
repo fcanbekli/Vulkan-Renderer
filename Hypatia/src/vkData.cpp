@@ -4,6 +4,7 @@ namespace hyp_vlk
 {
 	namespace hyp_backend {
 		DeviceData device_data;
-		WindowData surface_data;
+		WindowData window_data;
+		ImageData image_data;
 	}
 }
