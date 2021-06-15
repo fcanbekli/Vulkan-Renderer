@@ -19,32 +19,23 @@ namespace hyp_vlk
 			window_data.frameBufferHeight= m_drawPipeline->m_drawDesc->frameBufferHeight;
 			//-------------------
 
-			DeviceSystem::CreateInstance(device_data.instance,
-										 device_data.extensions);
 			
-			PresentationSystem::CreateWin32Surface(device_data.instance,
-				window_data.hWindow,
-				window_data.hInstance,
-				window_data.surface);
+			DeviceSystem::CreateInstance(&device_data);
 			
-			DeviceSystem::PickPhysicalDevice(device_data.instance,
-					                         device_data.physicalDevice);
+
+			PresentationSystem::CreateWin32Surface(&window_data, &device_data);
 
 			
-			DeviceSystem::CreateLogicalDevice(device_data.physicalDevice,
-					                          device_data.device,
-					                          device_data.graphicsQueue,
-											  device_data.presentQueue,
-					                          image_data.deviceExtensions);
+			DeviceSystem::PickPhysicalDevice(&device_data);
 
 			
-			PresentationSystem::CreateSwapChain(device_data.physicalDevice,
-												window_data.surface,
-												device_data.device,
-												image_data.swapChainImageFormat,
-												image_data.swapChainExtent,
-												image_data.swapChainImages,
-												image_data.swapChain);
+			DeviceSystem::CreateLogicalDevice(&image_data, &device_data);
+
+			
+			PresentationSystem::CreateSwapChain(&device_data, &image_data, &window_data);
+
+			
+			PresentationSystem::CreateImageBuffer(&device_data, &image_data);
 
 
 		}

@@ -7,20 +7,20 @@ namespace hyp_vlk
 
 		PresentationSystem::PresentationSystem() {}
 
-		void PresentationSystem::CreateWin32Surface(VkInstance& instance, HWND& hWindow, HINSTANCE& hInstance, VkSurfaceKHR& surface) {
+		void PresentationSystem::CreateWin32Surface(WindowData* windowData, DeviceData* deviceData) {
 			VkWin32SurfaceCreateInfoKHR createInfo{};
 			createInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-			createInfo.hwnd = hWindow;
-			createInfo.hinstance = hInstance;
+			createInfo.hwnd = windowData->hWindow;
+			createInfo.hinstance = windowData->hInstance;
 
-			if (vkCreateWin32SurfaceKHR(instance, &createInfo, NULL, &surface) != VK_SUCCESS) {
+			if (vkCreateWin32SurfaceKHR(deviceData->instance, &createInfo, NULL, &windowData->surface) != VK_SUCCESS) {
 				throw std::runtime_error("failed to create window surface!");
 			}
 		}
 
-		void PresentationSystem::CreateSwapChain(VkPhysicalDevice& physicalDevice, VkSurfaceKHR &surface, VkDevice &device, VkFormat &swapChainImageFormat, VkExtent2D &swapChainExtent, std::vector<VkImage> &swapChainImages, VkSwapchainKHR &swapChain)
+		void PresentationSystem::CreateSwapChain(DeviceData* deviceData, ImageData* imageData, WindowData* windowData)
 		{
-            SwapChainSupportDetails swapChainSupport = querySwapChainSupport(physicalDevice);
+            SwapChainSupportDetails swapChainSupport = querySwapChainSupport(deviceData->physicalDevice);
 
             VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
             VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
@@ -33,7 +33,7 @@ namespace hyp_vlk
 
             VkSwapchainCreateInfoKHR createInfo{};
             createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-            createInfo.surface = surface;
+            createInfo.surface = windowData->surface;
 
             createInfo.minImageCount = imageCount;
             createInfo.imageFormat = surfaceFormat.format;
@@ -42,7 +42,7 @@ namespace hyp_vlk
             createInfo.imageArrayLayers = 1;
             createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
-            QueueFamilyIndices indices = DeviceSystem::findQueueFamilies(physicalDevice);
+            QueueFamilyIndices indices = DeviceSystem::findQueueFamilies(deviceData->physicalDevice);
             uint32_t queueFamilyIndices[] = { indices.graphicsFamily.value(), indices.presentFamily.value() };
 
             if (indices.graphicsFamily != indices.presentFamily) {
@@ -61,28 +61,28 @@ namespace hyp_vlk
 
             createInfo.oldSwapchain = VK_NULL_HANDLE;
 
-            if (vkCreateSwapchainKHR(device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
+            if (vkCreateSwapchainKHR(deviceData->device, &createInfo, nullptr, &imageData->swapChain) != VK_SUCCESS) {
                 throw std::runtime_error("failed to create swap chain!");
             }
 
-            vkGetSwapchainImagesKHR(device, swapChain, &imageCount, nullptr);
-            swapChainImages.resize(imageCount);
-            vkGetSwapchainImagesKHR(device, swapChain, &imageCount, swapChainImages.data());
+            vkGetSwapchainImagesKHR(deviceData->device, imageData->swapChain, &imageCount, nullptr);
+            imageData->swapChainImages.resize(imageCount);
+            vkGetSwapchainImagesKHR(deviceData->device, imageData->swapChain, &imageCount, imageData->swapChainImages.data());
 
-            swapChainImageFormat = surfaceFormat.format;
-            swapChainExtent = extent;
+            imageData->swapChainImageFormat = surfaceFormat.format;
+            imageData->swapChainExtent = extent;
         }
 
-		void PresentationSystem::CreateImageBuffer(VkDevice& device, std::vector<VkImageView>& swapChainImageViews, std::vector<VkImage>& swapChainImages, VkFormat swapChainImageFormat)
+        void PresentationSystem::CreateImageBuffer(DeviceData* deviceData, ImageData* imageData)
 		{
-            swapChainImageViews.resize(swapChainImages.size());
+            imageData->swapChainImageViews.resize(imageData->swapChainImages.size());
 
-            for (size_t i = 0; i < swapChainImages.size(); i++) {
+            for (size_t i = 0; i < imageData->swapChainImages.size(); i++) {
                 VkImageViewCreateInfo createInfo{};
                 createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-                createInfo.image = swapChainImages[i];
+                createInfo.image = imageData->swapChainImages[i];
                 createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-                createInfo.format = swapChainImageFormat;
+                createInfo.format = imageData->swapChainImageFormat;
                 createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
                 createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
                 createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
@@ -93,7 +93,7 @@ namespace hyp_vlk
                 createInfo.subresourceRange.baseArrayLayer = 0;
                 createInfo.subresourceRange.layerCount = 1;
 
-                if (vkCreateImageView(device, &createInfo, nullptr, &swapChainImageViews[i]) != VK_SUCCESS) {
+                if (vkCreateImageView(deviceData->device, &createInfo, nullptr, &imageData->swapChainImageViews[i]) != VK_SUCCESS) {
                     throw std::runtime_error("failed to create image views!");
                 }
             }

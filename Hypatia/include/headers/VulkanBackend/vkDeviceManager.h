@@ -21,9 +21,9 @@ namespace hyp_vlk
 			static bool checkDeviceExtensionSupport(VkPhysicalDevice device);
 		public:
 			DeviceSystem(){}
-			static void CreateInstance(VkInstance &instance, std::vector<const char*>& extensions);
-			static void PickPhysicalDevice(VkInstance &instance, VkPhysicalDevice &physicalDevice);
-			static void CreateLogicalDevice(VkPhysicalDevice& physicalDevice, VkDevice& device, VkQueue& graphicsQueue, VkQueue& presentQueue, std::vector<const char*> &deviceExtensions);
+			static void CreateInstance(DeviceData* deviceData);
+			static void PickPhysicalDevice(DeviceData *deviceData);
+			static void CreateLogicalDevice(ImageData* imageData, DeviceData* deviceData);
 			
 		};
 	}

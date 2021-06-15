@@ -9,9 +9,9 @@ namespace hyp_vlk
 		public:
 			PresentationSystem();
 
-			static void CreateWin32Surface(VkInstance& instance, HWND& hWindow, HINSTANCE& hInstance, VkSurfaceKHR& surface);
-			static void CreateSwapChain(VkPhysicalDevice& physicalDevice, VkSurfaceKHR& surface, VkDevice& device, VkFormat& swapChainImageFormat, VkExtent2D& swapChainExtent, std::vector<VkImage>& swapChainImages, VkSwapchainKHR& swapChain);
-			static void CreateImageBuffer(VkDevice &device, std::vector<VkImageView> &swapChainImageViews, std::vector<VkImage> &swapChainImages, VkFormat swapChainImageFormat);
+			static void CreateWin32Surface(WindowData* windowData, DeviceData* deviceData);
+			static void CreateSwapChain(DeviceData* deviceData, ImageData* imageData, WindowData* windowData);
+			static void CreateImageBuffer(DeviceData* deviceData, ImageData* imageData);
 
 		private:
 			static VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
