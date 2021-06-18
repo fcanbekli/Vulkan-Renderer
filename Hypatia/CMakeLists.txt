@@ -22,11 +22,11 @@ set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(HEADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/headers")
 set(VENDOR_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/vendor")
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
-
+set(RES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/res")
 #Add the given directories to those the compiler uses to search for include files.
 
 include_directories( ${HEADERS_DIR} ${VENDOR_DIR})
-FILE(GLOB_RECURSE SOURCES  "${SRC_DIR}/*.cpp")
+FILE(GLOB_RECURSE SOURCES  "${SRC_DIR}/*.cpp" "${RES_DIR}/*.glsl")
 FILE(GLOB_RECURSE INCLUDES "${HEADERS_DIR}/*.h")
 
 add_library(Hypatia STATIC ${SOURCES} ${INCLUDES})

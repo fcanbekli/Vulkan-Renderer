@@ -3,9 +3,10 @@
 #include "VulkanBackend/vkUIPipeline.h"
 #include "VulkanBackend/vkPostPipeline.h"
 #include "VulkanBackend/vkDrawPipeline.h"
-#include "VulkanBackend/vkDeviceManager.h"
+#include "VulkanBackend/vkDeviceSystem.h"
 #include "VulkanBackend/vkValidationLayerManager.h"
-#include "VulkanBackend/vkPresentationManager.h"
+#include "VulkanBackend/vkPresentationSystem.h"
+#include "VulkanBackend/vkGraphicPipelineSystem.h"
 #include "VulkanBackend/vkData.h"
 #include "PipelineDesc.h"
 

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "VulkanBackend/vkDeviceManager.h"
+#include "VulkanBackend/vkDeviceSystem.h"
 namespace hyp_vlk
 {
 	namespace hyp_backend {

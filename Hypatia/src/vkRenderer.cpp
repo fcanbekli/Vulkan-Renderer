@@ -21,23 +21,13 @@ namespace hyp_vlk
 
 			
 			DeviceSystem::CreateInstance(&device_data);
-			
-
 			PresentationSystem::CreateWin32Surface(&window_data, &device_data);
-
-			
 			DeviceSystem::PickPhysicalDevice(&device_data);
-
-			
 			DeviceSystem::CreateLogicalDevice(&image_data, &device_data);
-
-			
 			PresentationSystem::CreateSwapChain(&device_data, &image_data, &window_data);
-
-			
 			PresentationSystem::CreateImageBuffer(&device_data, &image_data);
-
-
+			GraphicPipelineSystem::CreateRenderPass(&device_data, &image_data);
+			GraphicPipelineSystem::CreateGraphicsPipeline(&device_data, &image_data);
 		}
 
 		void RendererBackend::Render()

@@ -46,6 +46,10 @@ namespace hyp_vlk
 			VkExtent2D swapChainExtent;
 			std::vector<VkImageView> swapChainImageViews;
 			std::vector<const char*> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+			//Pipeline
+			VkRenderPass renderPass;
+			VkPipelineLayout pipelineLayout;
+			VkPipeline graphicsPipeline;
 		};
 		extern DeviceData device_data;
 		extern WindowData window_data;
