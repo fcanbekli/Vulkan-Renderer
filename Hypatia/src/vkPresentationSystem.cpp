@@ -99,6 +99,164 @@ namespace hyp_vlk
             }
 		}
 
+		void PresentationSystem::CreateFrameBuffer(DeviceData* deviceData, ImageData* imageData)
+		{
+            imageData->swapChainFramebuffers.resize(imageData->swapChainImageViews.size());
+
+            for (size_t i = 0; i < imageData->swapChainImageViews.size(); i++) {
+                VkImageView attachments[] = {
+                     imageData->swapChainImageViews[i]
+                };
+
+                VkFramebufferCreateInfo framebufferInfo{};
+                framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+                framebufferInfo.renderPass = imageData->renderPass;
+                framebufferInfo.attachmentCount = 1;
+                framebufferInfo.pAttachments = attachments;
+                framebufferInfo.width = imageData->swapChainExtent.width;
+                framebufferInfo.height = imageData->swapChainExtent.height;
+                framebufferInfo.layers = 1;
+
+                if (vkCreateFramebuffer(deviceData->device, &framebufferInfo, nullptr, &imageData->swapChainFramebuffers[i]) != VK_SUCCESS) {
+                    throw std::runtime_error("failed to create framebuffer!");
+                }
+            }
+		}
+
+		void PresentationSystem::CreateCommandPool(DeviceData* deviceData, ImageData* imageData)
+		{
+            QueueFamilyIndices queueFamilyIndices = DeviceSystem::findQueueFamilies(deviceData->physicalDevice);
+
+            VkCommandPoolCreateInfo poolInfo{};
+            poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+            poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();
+
+            if (vkCreateCommandPool(deviceData->device, &poolInfo, nullptr, &imageData->commandPool) != VK_SUCCESS) {
+                throw std::runtime_error("failed to create command pool!");
+            }
+		}
+
+		void PresentationSystem::CreateCommandBuffer(DeviceData* deviceData, ImageData* imageData)
+		{
+            imageData->commandBuffers.resize(imageData->swapChainFramebuffers.size());
+
+            VkCommandBufferAllocateInfo allocInfo{};
+            allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+            allocInfo.commandPool = imageData->commandPool;
+            allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+            allocInfo.commandBufferCount = (uint32_t)imageData->commandBuffers.size();
+
+            if (vkAllocateCommandBuffers(deviceData->device, &allocInfo, imageData->commandBuffers.data()) != VK_SUCCESS) {
+                throw std::runtime_error("failed to allocate command buffers!");
+            }
+
+            for (size_t i = 0; i < imageData->commandBuffers.size(); i++) {
+                VkCommandBufferBeginInfo beginInfo{};
+                beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+
+                if (vkBeginCommandBuffer(imageData->commandBuffers[i], &beginInfo) != VK_SUCCESS) {
+                    throw std::runtime_error("failed to begin recording command buffer!");
+                }
+
+                VkRenderPassBeginInfo renderPassInfo{};
+                renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+                renderPassInfo.renderPass = imageData->renderPass;
+                renderPassInfo.framebuffer = imageData->swapChainFramebuffers[i];
+                renderPassInfo.renderArea.offset = { 0, 0 };
+                renderPassInfo.renderArea.extent = imageData->swapChainExtent;
+
+                VkClearValue clearColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+                renderPassInfo.clearValueCount = 1;
+                renderPassInfo.pClearValues = &clearColor;
+
+                vkCmdBeginRenderPass(imageData->commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+                vkCmdBindPipeline(imageData->commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, imageData->graphicsPipeline);
+
+                vkCmdDraw(imageData->commandBuffers[i], 3, 1, 0, 0);
+
+                vkCmdEndRenderPass(imageData->commandBuffers[i]);
+
+                if (vkEndCommandBuffer(imageData->commandBuffers[i]) != VK_SUCCESS) {
+                    throw std::runtime_error("failed to record command buffer!");
+                }
+            }
+		}
+
+		void PresentationSystem::CreateSyncObjects(DeviceData* deviceData, ImageData* imageData)
+		{
+            imageData->imageAvailableSemaphores.resize(imageData->MAX_FRAMES_IN_FLIGHT);
+            imageData->renderFinishedSemaphores.resize(imageData->MAX_FRAMES_IN_FLIGHT);
+            imageData->inFlightFences.resize(imageData->MAX_FRAMES_IN_FLIGHT);
+            imageData->imagesInFlight.resize(imageData->swapChainImages.size(), VK_NULL_HANDLE);
+
+            VkSemaphoreCreateInfo semaphoreInfo{};
+            semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+
+            VkFenceCreateInfo fenceInfo{};
+            fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+            fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+
+            for (size_t i = 0; i < imageData->MAX_FRAMES_IN_FLIGHT; i++) {
+                if (vkCreateSemaphore(deviceData->device, &semaphoreInfo, nullptr, &imageData->imageAvailableSemaphores[i]) != VK_SUCCESS ||
+                    vkCreateSemaphore(deviceData->device, &semaphoreInfo, nullptr, &imageData->renderFinishedSemaphores[i]) != VK_SUCCESS ||
+                    vkCreateFence(deviceData->device, &fenceInfo, nullptr, &imageData->inFlightFences[i]) != VK_SUCCESS) {
+                    throw std::runtime_error("failed to create synchronization objects for a frame!");
+                }
+            }
+		}
+
+		void PresentationSystem::DrawFrame(DeviceData* deviceData, ImageData* imageData)
+		{
+            vkWaitForFences(deviceData->device, 1, &imageData->inFlightFences[imageData->currentFrame], VK_TRUE, UINT64_MAX);
+
+            uint32_t imageIndex;
+            vkAcquireNextImageKHR(deviceData->device, imageData->swapChain, UINT64_MAX, imageData->imageAvailableSemaphores[imageData->currentFrame], VK_NULL_HANDLE, &imageIndex);
+
+            if (imageData->imagesInFlight[imageIndex] != VK_NULL_HANDLE) {
+                vkWaitForFences(deviceData->device, 1, &imageData->imagesInFlight[imageIndex], VK_TRUE, UINT64_MAX);
+            }
+            imageData->imagesInFlight[imageIndex] = imageData->inFlightFences[imageData->currentFrame];
+
+            VkSubmitInfo submitInfo{};
+            submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+
+            VkSemaphore waitSemaphores[] = { imageData->imageAvailableSemaphores[imageData->currentFrame] };
+            VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+            submitInfo.waitSemaphoreCount = 1;
+            submitInfo.pWaitSemaphores = waitSemaphores;
+            submitInfo.pWaitDstStageMask = waitStages;
+
+            submitInfo.commandBufferCount = 1;
+            submitInfo.pCommandBuffers = &imageData->commandBuffers[imageIndex];
+
+            VkSemaphore signalSemaphores[] = { imageData->renderFinishedSemaphores[imageData->currentFrame] };
+            submitInfo.signalSemaphoreCount = 1;
+            submitInfo.pSignalSemaphores = signalSemaphores;
+
+            vkResetFences(deviceData->device, 1, &imageData->inFlightFences[imageData->currentFrame]);
+
+            if (vkQueueSubmit(deviceData->graphicsQueue, 1, &submitInfo, imageData->inFlightFences[imageData->currentFrame]) != VK_SUCCESS) {
+                throw std::runtime_error("failed to submit draw command buffer!");
+            }
+
+            VkPresentInfoKHR presentInfo{};
+            presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+
+            presentInfo.waitSemaphoreCount = 1;
+            presentInfo.pWaitSemaphores = signalSemaphores;
+
+            VkSwapchainKHR swapChains[] = { imageData->swapChain };
+            presentInfo.swapchainCount = 1;
+            presentInfo.pSwapchains = swapChains;
+
+            presentInfo.pImageIndices = &imageIndex;
+
+            vkQueuePresentKHR(deviceData->presentQueue, &presentInfo);
+
+            imageData->currentFrame = (imageData->currentFrame + 1) % imageData->MAX_FRAMES_IN_FLIGHT;
+		}
+
 		SwapChainSupportDetails PresentationSystem::querySwapChainSupport(VkPhysicalDevice device) {
             SwapChainSupportDetails details;
 

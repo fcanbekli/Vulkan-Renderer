@@ -19,15 +19,21 @@ namespace hyp_vlk
 			window_data.frameBufferHeight= m_drawPipeline->m_drawDesc->frameBufferHeight;
 			//-------------------
 
-			
+				
 			DeviceSystem::CreateInstance(&device_data);
 			PresentationSystem::CreateWin32Surface(&window_data, &device_data);
 			DeviceSystem::PickPhysicalDevice(&device_data);
 			DeviceSystem::CreateLogicalDevice(&image_data, &device_data);
+			
 			PresentationSystem::CreateSwapChain(&device_data, &image_data, &window_data);
+		
 			PresentationSystem::CreateImageBuffer(&device_data, &image_data);
 			GraphicPipelineSystem::CreateRenderPass(&device_data, &image_data);
 			GraphicPipelineSystem::CreateGraphicsPipeline(&device_data, &image_data);
+			PresentationSystem::CreateFrameBuffer(&device_data, &image_data);
+			PresentationSystem::CreateCommandPool(&device_data, &image_data);
+			PresentationSystem::CreateCommandBuffer(&device_data, &image_data);
+			PresentationSystem::CreateSyncObjects(&device_data, &image_data);
 		}
 
 		void RendererBackend::Render()
@@ -37,6 +43,8 @@ namespace hyp_vlk
 			m_uiPipeline->Exec();
 			m_postPipeline->Exec();
 
+
+			PresentationSystem::DrawFrame(&device_data, &image_data);
 			printf("FRAME DONE\n");
 		}
 

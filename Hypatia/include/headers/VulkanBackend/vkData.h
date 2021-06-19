@@ -50,6 +50,21 @@ namespace hyp_vlk
 			VkRenderPass renderPass;
 			VkPipelineLayout pipelineLayout;
 			VkPipeline graphicsPipeline;
+			std::vector<VkFramebuffer> swapChainFramebuffers;
+
+			VkCommandPool commandPool;
+			std::vector<VkCommandBuffer> commandBuffers;
+
+			VkSemaphore imageAvailableSemaphore;
+			VkSemaphore renderFinishedSemaphore;
+
+			std::vector<VkSemaphore> imageAvailableSemaphores;
+			std::vector<VkSemaphore> renderFinishedSemaphores;
+
+			std::vector<VkFence> inFlightFences;
+			std::vector<VkFence> imagesInFlight;
+			const int MAX_FRAMES_IN_FLIGHT = 2;
+			size_t currentFrame = 0;
 		};
 		extern DeviceData device_data;
 		extern WindowData window_data;
