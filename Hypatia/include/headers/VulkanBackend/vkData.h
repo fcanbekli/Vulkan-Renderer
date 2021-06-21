@@ -17,14 +17,17 @@ namespace hyp_vlk
 		};
 
 		struct SwapChainSupportDetails {
-			VkSurfaceCapabilitiesKHR capabilities;
-			std::vector<VkSurfaceFormatKHR> formats;
-			std::vector<VkPresentModeKHR> presentModes;
+			VkSurfaceCapabilitiesKHR capabilities; //Basic surface capabilities (min/max number of images in swap chain, min/max width and height of images)
+			std::vector<VkSurfaceFormatKHR> formats; //Surface formats (pixel format, color space)
+			std::vector<VkPresentModeKHR> presentModes; //Available presentation modes
 		};
 
 		struct DeviceData {
 			VkInstance instance;
 			VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+			VkPhysicalDeviceProperties physicalDeviceProperties;
+			VkPhysicalDeviceFeatures physicalDeviceFeatures;
+			VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties;
 			VkDevice device;
 			VkQueue graphicsQueue;
 			VkQueue presentQueue;

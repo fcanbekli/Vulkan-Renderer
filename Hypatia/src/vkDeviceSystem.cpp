@@ -71,6 +71,24 @@ namespace hyp_vlk
 			if (deviceData->physicalDevice == VK_NULL_HANDLE) {
 				throw std::runtime_error("failed to find a suitable GPU!");
 			}
+
+			VkPhysicalDeviceProperties physicalDeviceProperties;
+			vkGetPhysicalDeviceProperties(
+				deviceData->physicalDevice,
+				&physicalDeviceProperties
+			);
+		
+			VkPhysicalDeviceFeatures physicalDeviceFeatures;
+			vkGetPhysicalDeviceFeatures(
+				deviceData->physicalDevice,
+				&physicalDeviceFeatures
+			);
+
+			VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties;
+			vkGetPhysicalDeviceMemoryProperties(
+				deviceData->physicalDevice,
+				&physicalDeviceMemoryProperties
+			);
 		}
 
 		void DeviceSystem::CreateLogicalDevice(ImageData *imageData, DeviceData *deviceData)
@@ -90,16 +108,11 @@ namespace hyp_vlk
 				queueCreateInfos.push_back(queueCreateInfo);
 			}
 
-			VkPhysicalDeviceFeatures deviceFeatures{};
-
 			VkDeviceCreateInfo createInfo{};
 			createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-
 			createInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
 			createInfo.pQueueCreateInfos = queueCreateInfos.data();
-
-			createInfo.pEnabledFeatures = &deviceFeatures;
-
+			createInfo.pEnabledFeatures = &deviceData->physicalDeviceFeatures;
 			createInfo.enabledExtensionCount = static_cast<uint32_t>(imageData->deviceExtensions.size());
 			createInfo.ppEnabledExtensionNames = imageData->deviceExtensions.data();
 
@@ -153,7 +166,7 @@ namespace hyp_vlk
 				}
 
 				VkBool32 presentSupport = false;
-				vkGetPhysicalDeviceSurfaceSupportKHR(device, i, window_data.surface, &presentSupport);
+				vkGetPhysicalDeviceSurfaceSupportKHR(device, i, window_data.surface, &presentSupport); //To determine whether a queue family of a physical device supports presentation to a given surface
 
 				if (presentSupport) {
 					indices.presentFamily = i;
