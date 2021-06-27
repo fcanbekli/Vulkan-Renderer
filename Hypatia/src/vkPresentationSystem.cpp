@@ -149,38 +149,6 @@ namespace hyp_vlk
             if (vkAllocateCommandBuffers(deviceData->device, &allocInfo, imageData->commandBuffers.data()) != VK_SUCCESS) {
                 throw std::runtime_error("failed to allocate command buffers!");
             }
-
-            for (size_t i = 0; i < imageData->commandBuffers.size(); i++) {
-                VkCommandBufferBeginInfo beginInfo{};
-                beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-
-                if (vkBeginCommandBuffer(imageData->commandBuffers[i], &beginInfo) != VK_SUCCESS) {
-                    throw std::runtime_error("failed to begin recording command buffer!");
-                }
-
-                VkRenderPassBeginInfo renderPassInfo{};
-                renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-                renderPassInfo.renderPass = imageData->renderPass;
-                renderPassInfo.framebuffer = imageData->swapChainFramebuffers[i];
-                renderPassInfo.renderArea.offset = { 0, 0 };
-                renderPassInfo.renderArea.extent = imageData->swapChainExtent;
-
-                VkClearValue clearColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-                renderPassInfo.clearValueCount = 1;
-                renderPassInfo.pClearValues = &clearColor;
-
-                vkCmdBeginRenderPass(imageData->commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
-
-                vkCmdBindPipeline(imageData->commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, imageData->graphicsPipeline);
-
-                vkCmdDraw(imageData->commandBuffers[i], 3, 1, 0, 0);
-
-                vkCmdEndRenderPass(imageData->commandBuffers[i]);
-
-                if (vkEndCommandBuffer(imageData->commandBuffers[i]) != VK_SUCCESS) {
-                    throw std::runtime_error("failed to record command buffer!");
-                }
-            }
 		}
 
 		void PresentationSystem::CreateSyncObjects(DeviceData* deviceData, ImageData* imageData)
@@ -208,10 +176,44 @@ namespace hyp_vlk
 
 		void PresentationSystem::DrawFrame(DeviceData* deviceData, ImageData* imageData)
 		{
-            vkWaitForFences(deviceData->device, 1, &imageData->inFlightFences[imageData->currentFrame], VK_TRUE, UINT64_MAX);
-
             uint32_t imageIndex;
             vkAcquireNextImageKHR(deviceData->device, imageData->swapChain, UINT64_MAX, imageData->imageAvailableSemaphores[imageData->currentFrame], VK_NULL_HANDLE, &imageIndex);
+
+			VkCommandBufferBeginInfo beginInfo{};
+			beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+
+			if (vkBeginCommandBuffer(imageData->commandBuffers[0], &beginInfo) != VK_SUCCESS) {
+				throw std::runtime_error("failed to begin recording command buffer!");
+			}
+
+			VkRenderPassBeginInfo renderPassInfo{};
+			renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+			renderPassInfo.renderPass = imageData->renderPass;
+			renderPassInfo.framebuffer = imageData->swapChainFramebuffers[imageIndex];
+			renderPassInfo.renderArea.offset = { 0, 0 };
+			renderPassInfo.renderArea.extent = imageData->swapChainExtent;
+
+			VkClearValue clearColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+			renderPassInfo.clearValueCount = 1;
+			renderPassInfo.pClearValues = &clearColor;
+
+			vkCmdBeginRenderPass(imageData->commandBuffers[0], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+			vkCmdBindPipeline(imageData->commandBuffers[0], VK_PIPELINE_BIND_POINT_GRAPHICS, imageData->graphicsPipeline);
+
+			vkCmdDraw(imageData->commandBuffers[0], 3, 1, 0, 0);
+
+			vkCmdEndRenderPass(imageData->commandBuffers[0]);
+
+			if (vkEndCommandBuffer(imageData->commandBuffers[0]) != VK_SUCCESS) {
+				throw std::runtime_error("failed to record command buffer!");
+			}
+
+
+            vkWaitForFences(deviceData->device, 1, &imageData->inFlightFences[imageData->currentFrame], VK_TRUE, UINT64_MAX);
+
+
+
 
             if (imageData->imagesInFlight[imageIndex] != VK_NULL_HANDLE) {
                 vkWaitForFences(deviceData->device, 1, &imageData->imagesInFlight[imageIndex], VK_TRUE, UINT64_MAX);
@@ -228,7 +230,7 @@ namespace hyp_vlk
             submitInfo.pWaitDstStageMask = waitStages;
 
             submitInfo.commandBufferCount = 1;
-            submitInfo.pCommandBuffers = &imageData->commandBuffers[imageIndex];
+            submitInfo.pCommandBuffers = &imageData->commandBuffers[0];
 
             VkSemaphore signalSemaphores[] = { imageData->renderFinishedSemaphores[imageData->currentFrame] };
             submitInfo.signalSemaphoreCount = 1;
