@@ -181,8 +181,5 @@ namespace hyp_vlk
 
 			return indices;
 		}
-
-
-
 	}
 }

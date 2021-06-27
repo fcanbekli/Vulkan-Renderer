@@ -1,5 +1,5 @@
 #include "Hypatia.h"
-
+#include <SceneGraph.h>
 
 std::vector<const char*> getRequiredExtensions() {
 	uint32_t glfwExtensionCount = 0;
@@ -53,7 +53,9 @@ int main()
 	status = hypatiaRenderer->CreateRenderer(pipelineDesc);
 	
 	hypatiaRenderer->m_renderer.InitRenderer();
-	
+	hyp_backend::Entity entity;
+	entity.m_RenderLayer = hypatia::ERenderLayer::kBaseLayer;
+	hypatiaRenderer->m_SceneGraph.addNewEntity(entity);
 	while (true)
 	{
 		hypatiaRenderer->Render();

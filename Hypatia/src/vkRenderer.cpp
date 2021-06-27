@@ -32,8 +32,7 @@ namespace hyp_vlk
 			GraphicPipelineSystem::CreateGraphicsPipeline(&device_data, &image_data);
 			PresentationSystem::CreateFrameBuffer(&device_data, &image_data);
 			PresentationSystem::CreateCommandPool(&device_data, &image_data);
-			PresentationSystem::CreateCommandBuffer(&device_data, &image_data);
-			PresentationSystem::CreateSyncObjects(&device_data, &image_data);
+			m_FrameGraph.m_BaseRenderPass.InitializeRenderPass();
 		}
 
 		void RendererBackend::Render()
@@ -43,8 +42,7 @@ namespace hyp_vlk
 			m_uiPipeline->Exec();
 			m_postPipeline->Exec();
 
-
-			PresentationSystem::DrawFrame(&device_data, &image_data);
+			m_FrameGraph.BuildFrame();
 			printf("FRAME DONE\n");
 		}
 

@@ -209,11 +209,7 @@ namespace hyp_vlk
 				throw std::runtime_error("failed to record command buffer!");
 			}
 
-
             vkWaitForFences(deviceData->device, 1, &imageData->inFlightFences[imageData->currentFrame], VK_TRUE, UINT64_MAX);
-
-
-
 
             if (imageData->imagesInFlight[imageIndex] != VK_NULL_HANDLE) {
                 vkWaitForFences(deviceData->device, 1, &imageData->imagesInFlight[imageIndex], VK_TRUE, UINT64_MAX);
