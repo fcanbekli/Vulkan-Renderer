@@ -53,6 +53,10 @@ int main()
 	status = hypatiaRenderer->CreateRenderer(pipelineDesc);
 	
 	hypatiaRenderer->m_renderer.InitRenderer();
+
+	hyp_vlk::hyp_backend::Entity* entity = new hyp_vlk::hyp_backend::Entity("Test Entity");
+	hypatiaRenderer->m_renderer.m_SceneGraph.addNewEntity(entity);
+
 	
 	while (true)
 	{

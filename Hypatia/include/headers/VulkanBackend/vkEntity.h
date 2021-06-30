@@ -1,14 +1,21 @@
 ﻿#pragma once
-#include "vkData.h"
+#include "iostream"
 #include "pch.h"
-namespace hypatia
-{
-	class Entity {
-	public:
-		Entity();
-		std::string m_EntityName;
+#ifdef USE_VULKAN
+#include "VulkanBackend/vkData.h"
+using namespace hyp_vlk;
+#endif
 
-		VkCommandBuffer m_CommandBuffer;
+namespace hyp_vlk{
+	namespace hyp_backend {
 
-	};
+		class Entity {
+		public:
+			Entity(std::string entityName);
+			std::string m_EntityName;
+
+			VkCommandBuffer m_CommandBuffer;
+
+		};
+	}
 }

@@ -138,17 +138,17 @@ namespace hyp_vlk
 
 		void PresentationSystem::CreateCommandBuffer(DeviceData* deviceData, ImageData* imageData)
 		{
-            imageData->commandBuffers.resize(imageData->swapChainFramebuffers.size());
-
-            VkCommandBufferAllocateInfo allocInfo{};
-            allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-            allocInfo.commandPool = imageData->commandPool;
-            allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-            allocInfo.commandBufferCount = (uint32_t)imageData->commandBuffers.size();
-
-            if (vkAllocateCommandBuffers(deviceData->device, &allocInfo, imageData->commandBuffers.data()) != VK_SUCCESS) {
-                throw std::runtime_error("failed to allocate command buffers!");
-            }
+//             imageData->commandBuffers.resize(imageData->swapChainFramebuffers.size());
+// 
+//             VkCommandBufferAllocateInfo allocInfo{};
+//             allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+//             allocInfo.commandPool = imageData->commandPool;
+//             allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+//             allocInfo.commandBufferCount = (uint32_t)imageData->commandBuffers.size();
+// 
+//             if (vkAllocateCommandBuffers(deviceData->device, &allocInfo, imageData->commandBuffers.data()) != VK_SUCCESS) {
+//                 throw std::runtime_error("failed to allocate command buffers!");
+//             }
 		}
 
 		void PresentationSystem::CreateSyncObjects(DeviceData* deviceData, ImageData* imageData)

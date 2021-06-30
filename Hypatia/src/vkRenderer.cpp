@@ -34,6 +34,8 @@ namespace hyp_vlk
 			PresentationSystem::CreateCommandPool(&device_data, &image_data);
 			PresentationSystem::CreateCommandBuffer(&device_data, &image_data);
 			PresentationSystem::CreateSyncObjects(&device_data, &image_data);
+			m_FrameGraph.SetupSceneGraph(&m_SceneGraph);
+			m_FrameGraph.m_BaseRenderPass.InitRenderPass();
 		}
 
 		void RendererBackend::Render()

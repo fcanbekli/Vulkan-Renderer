@@ -9,6 +9,7 @@
 #include "VulkanBackend/vkGraphicPipelineSystem.h"
 #include "VulkanBackend/vkFrameGraph.h"
 #include "VulkanBackend/vkData.h"
+#include "SceneGraph.h"
 #include "PipelineDesc.h"
 
 namespace hyp_vlk
@@ -22,7 +23,7 @@ namespace hyp_vlk
 			void Render();
 			void SyncRendererOptions(hypatia::PIPELINE_DESC pipelineDesc);
 
-			
+			SceneGraph m_SceneGraph;
 		private:
 			std::shared_ptr<DrawPipeline> m_drawPipeline;
 			std::shared_ptr<UIPipeline> m_uiPipeline;
@@ -33,6 +34,7 @@ namespace hyp_vlk
 			PresentationSystem m_presentationManager;
 
 			FrameGraph m_FrameGraph;
+
 
 			hypatia::PIPELINE_DESC m_pipelineDesc;
 		};

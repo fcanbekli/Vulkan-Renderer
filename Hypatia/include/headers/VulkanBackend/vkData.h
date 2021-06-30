@@ -57,7 +57,7 @@ namespace hyp_vlk
 			std::vector<VkFramebuffer> swapChainFramebuffers;
 
 			VkCommandPool commandPool;
-			std::vector<VkCommandBuffer> commandBuffers;
+			//std::vector<VkCommandBuffer> commandBuffers;
 
 			VkSemaphore imageAvailableSemaphore;
 			VkSemaphore renderFinishedSemaphore;
