@@ -43,6 +43,7 @@ namespace hyp_vlk
 		};
 
 		struct ImageData{
+			uint32_t imageIndex;
 			VkSwapchainKHR swapChain;
 			std::vector<VkImage> swapChainImages;
 			VkFormat swapChainImageFormat;

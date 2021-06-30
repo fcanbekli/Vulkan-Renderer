@@ -2,5 +2,5 @@
 
 namespace hypatia
 {
-	std::vector<Entity*> SceneGraph::entities;
+	
 }

@@ -19,6 +19,7 @@ namespace hyp_vlk
 
 			static void CreateSyncObjects(DeviceData* deviceData, ImageData* imageData);
 			static void DrawFrame(DeviceData* deviceData, ImageData* imageData);
+			static void PresentFrame(DeviceData* deviceData, ImageData* imageData);
 		private:
 			static VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 			static SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);

@@ -174,85 +174,37 @@ namespace hyp_vlk
             }
 		}
 
+
+
+
+        
+
+
 		void PresentationSystem::DrawFrame(DeviceData* deviceData, ImageData* imageData)
 		{
-            uint32_t imageIndex;
-            vkAcquireNextImageKHR(deviceData->device, imageData->swapChain, UINT64_MAX, imageData->imageAvailableSemaphores[imageData->currentFrame], VK_NULL_HANDLE, &imageIndex);
 
-			VkCommandBufferBeginInfo beginInfo{};
-			beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
-			if (vkBeginCommandBuffer(imageData->commandBuffers[0], &beginInfo) != VK_SUCCESS) {
-				throw std::runtime_error("failed to begin recording command buffer!");
-			}
+			vkAcquireNextImageKHR(deviceData->device, imageData->swapChain, UINT64_MAX, imageData->imageAvailableSemaphores[imageData->currentFrame], VK_NULL_HANDLE, &imageData->imageIndex);
+ 
+		}
 
-			VkRenderPassBeginInfo renderPassInfo{};
-			renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-			renderPassInfo.renderPass = imageData->renderPass;
-			renderPassInfo.framebuffer = imageData->swapChainFramebuffers[imageIndex];
-			renderPassInfo.renderArea.offset = { 0, 0 };
-			renderPassInfo.renderArea.extent = imageData->swapChainExtent;
 
-			VkClearValue clearColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-			renderPassInfo.clearValueCount = 1;
-			renderPassInfo.pClearValues = &clearColor;
+		void PresentationSystem::PresentFrame(DeviceData* deviceData, ImageData* imageData)
+		{
+			VkPresentInfoKHR presentInfo{};
+			presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 
-			vkCmdBeginRenderPass(imageData->commandBuffers[0], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+			presentInfo.waitSemaphoreCount = 0;
+			presentInfo.pWaitSemaphores = nullptr;
 
-			vkCmdBindPipeline(imageData->commandBuffers[0], VK_PIPELINE_BIND_POINT_GRAPHICS, imageData->graphicsPipeline);
+			VkSwapchainKHR swapChains[] = { imageData->swapChain };
+			presentInfo.swapchainCount = 1;
+			presentInfo.pSwapchains = swapChains;
 
-			vkCmdDraw(imageData->commandBuffers[0], 3, 1, 0, 0);
+			presentInfo.pImageIndices = &imageData->imageIndex;
 
-			vkCmdEndRenderPass(imageData->commandBuffers[0]);
-
-			if (vkEndCommandBuffer(imageData->commandBuffers[0]) != VK_SUCCESS) {
-				throw std::runtime_error("failed to record command buffer!");
-			}
-
-            vkWaitForFences(deviceData->device, 1, &imageData->inFlightFences[imageData->currentFrame], VK_TRUE, UINT64_MAX);
-
-            if (imageData->imagesInFlight[imageIndex] != VK_NULL_HANDLE) {
-                vkWaitForFences(deviceData->device, 1, &imageData->imagesInFlight[imageIndex], VK_TRUE, UINT64_MAX);
-            }
-            imageData->imagesInFlight[imageIndex] = imageData->inFlightFences[imageData->currentFrame];
-
-            VkSubmitInfo submitInfo{};
-            submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-
-            VkSemaphore waitSemaphores[] = { imageData->imageAvailableSemaphores[imageData->currentFrame] };
-            VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
-            submitInfo.waitSemaphoreCount = 1;
-            submitInfo.pWaitSemaphores = waitSemaphores;
-            submitInfo.pWaitDstStageMask = waitStages;
-
-            submitInfo.commandBufferCount = 1;
-            submitInfo.pCommandBuffers = &imageData->commandBuffers[0];
-
-            VkSemaphore signalSemaphores[] = { imageData->renderFinishedSemaphores[imageData->currentFrame] };
-            submitInfo.signalSemaphoreCount = 1;
-            submitInfo.pSignalSemaphores = signalSemaphores;
-
-            vkResetFences(deviceData->device, 1, &imageData->inFlightFences[imageData->currentFrame]);
-
-            if (vkQueueSubmit(deviceData->graphicsQueue, 1, &submitInfo, imageData->inFlightFences[imageData->currentFrame]) != VK_SUCCESS) {
-                throw std::runtime_error("failed to submit draw command buffer!");
-            }
-
-            VkPresentInfoKHR presentInfo{};
-            presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-
-            presentInfo.waitSemaphoreCount = 1;
-            presentInfo.pWaitSemaphores = signalSemaphores;
-
-            VkSwapchainKHR swapChains[] = { imageData->swapChain };
-            presentInfo.swapchainCount = 1;
-            presentInfo.pSwapchains = swapChains;
-
-            presentInfo.pImageIndices = &imageIndex;
-
-            vkQueuePresentKHR(deviceData->presentQueue, &presentInfo);
-
-            imageData->currentFrame = (imageData->currentFrame + 1) % imageData->MAX_FRAMES_IN_FLIGHT;
+			vkQueuePresentKHR(deviceData->presentQueue, &presentInfo);
+			imageData->currentFrame = (imageData->currentFrame + 1) % imageData->MAX_FRAMES_IN_FLIGHT;
 		}
 
 		SwapChainSupportDetails PresentationSystem::querySwapChainSupport(VkPhysicalDevice device) {

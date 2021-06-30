@@ -1,17 +1,14 @@
 ﻿#pragma once
-#include "ERenderLayer.h"
-#include "VulkanBackend/vkBufferFactory.h"
-#include "Material.h"
-
-namespace hyp_vlk
+#include "vkData.h"
+#include "pch.h"
+namespace hypatia
 {
-	namespace hyp_backend {
-		class Entity {
-		public:
-			Entity();
-			VkCommandBuffer m_CommandBuffer;
-			hypatia::ERenderLayer m_RenderLayer;
-			hypatia::Material m_Material;
-		};
-	}
-} 
+	class Entity {
+	public:
+		Entity();
+		std::string m_EntityName;
+
+		VkCommandBuffer m_CommandBuffer;
+
+	};
+}

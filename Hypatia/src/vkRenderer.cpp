@@ -32,17 +32,18 @@ namespace hyp_vlk
 			GraphicPipelineSystem::CreateGraphicsPipeline(&device_data, &image_data);
 			PresentationSystem::CreateFrameBuffer(&device_data, &image_data);
 			PresentationSystem::CreateCommandPool(&device_data, &image_data);
-			m_FrameGraph.m_BaseRenderPass.InitializeRenderPass();
+			PresentationSystem::CreateCommandBuffer(&device_data, &image_data);
+			PresentationSystem::CreateSyncObjects(&device_data, &image_data);
 		}
 
 		void RendererBackend::Render()
 		{
-			m_computePipeline->Exec();
-			m_drawPipeline->Exec();
-			m_uiPipeline->Exec();
-			m_postPipeline->Exec();
 
-			m_FrameGraph.BuildFrame();
+			vkAcquireNextImageKHR(device_data.device, image_data.swapChain, UINT64_MAX, image_data.imageAvailableSemaphores[image_data.currentFrame], VK_NULL_HANDLE, &image_data.imageIndex);
+
+			m_FrameGraph.setNextImage(image_data.imageIndex);
+			m_FrameGraph.BuildFrame(&device_data, &image_data);
+			PresentationSystem::PresentFrame(&device_data, &image_data);
 			printf("FRAME DONE\n");
 		}
 

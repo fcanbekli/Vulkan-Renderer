@@ -8,6 +8,8 @@ namespace hyp_vlk
 
 		//TODO:(Caner, Fatih) Separate Queue Logic
 
+
+
 		class DeviceSystem {
 		private:
 			friend class PresentationSystem;

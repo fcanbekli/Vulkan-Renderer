@@ -1,6 +1,0 @@
-#include " .h"
-
-namespace hypatia
-{
-
-}
