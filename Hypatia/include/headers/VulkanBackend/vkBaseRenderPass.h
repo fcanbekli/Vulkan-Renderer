@@ -1,21 +1,23 @@
 ﻿#pragma once
 #include "Entity.h"
-#ifdef USE_VULKAN
-#include "VulkanBackend/vkData.h"
-#endif
+#include "vkIRenderPass.h"
+#include "vkRenderer.h"
+#include "PresentationSystem.h"
 
 namespace hypatia
 {
 	namespace hyp_backend {
-		class BaseRenderPass {
+		class BaseRenderPass : public IRenderPass {
 		public:
-			BaseRenderPass() {};
-			void InitRenderPass();
+			BaseRenderPass(SceneGraph* _sceneGraph);
+			SceneGraph* m_SceneGraph;
+			void InitRenderPass() override;
 			VkFramebuffer m_FrameBuffer;
 			VkRenderPass m_Renderpass;
-			void Draw();
+			//image
+			//image view
+			void Draw(uint32_t nextImageIndex);
 		};
-	
 	}
 }
 

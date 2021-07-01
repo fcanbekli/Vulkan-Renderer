@@ -6,19 +6,23 @@ using namespace hypatia::hyp_backend;
 
 
 #include "SceneGraph.h"
+#include <ERenderLayer.h>
 namespace hypatia
 {
 	class FrameGraph
 	{
 	public:
-		BaseRenderPass m_BaseRenderPass;
-
 		uint32_t m_NextImageIndex;
 
-		SceneGraph* m_SceneGraph;
+		static std::vector<IRenderPass*> m_RenderPasses;
 
-		void setNextImage(uint32_t nextImageIndex) { this->m_NextImageIndex = nextImageIndex; }
-		VkFramebuffer BuildFrame(DeviceData* deviceData, ImageData* imageData);
+		void SetNextImage(uint32_t nextImageIndex) { this->m_NextImageIndex = nextImageIndex; }
+		static VkRenderPass GetRenderPass(ERenderLayer layer);
+		void BuildFrame();
+		void InitializeRenderPasses(SceneGraph* sceneGraph);
 		void BindSceneGraph(SceneGraph* sceneGraph) { m_SceneGraph = sceneGraph; }
 	};
 }
+
+		
+				

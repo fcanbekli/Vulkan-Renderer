@@ -3,11 +3,33 @@
 
 namespace hypatia
 {
+	const static int MAX_FRAMES_IN_FLIGHT = 2;
+	size_t PresentationSystem::m_CurrentFrame = 0;
+
 	uint32_t PresentationSystem::GetNextImage()
 	{
-		//vkAcquireNextImageKHR(hyp_backend::RendererBackend::GetDevice(), m_SwapChain, UINT64_MAX, image_data.imageAvailableSemaphores[image_data.currentFrame], VK_NULL_HANDLE, &m_ImageIndex);
+		vkAcquireNextImageKHR(hyp_backend::RendererBackend::GetDevice(), m_SwapChain, UINT64_MAX, nullptr, VK_NULL_HANDLE, &m_ImageIndex);
 		return m_ImageIndex;
 	}
+
+	void PresentationSystem::PresentFrame()
+	{
+		VkPresentInfoKHR presentInfo{};
+		presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+
+		presentInfo.waitSemaphoreCount = 0;
+		presentInfo.pWaitSemaphores = nullptr;
+
+		VkSwapchainKHR swapChains[] = { m_SwapChain };
+		presentInfo.swapchainCount = 1;
+		presentInfo.pSwapchains = swapChains;
+
+		presentInfo.pImageIndices = &m_ImageIndex;
+
+		vkQueuePresentKHR(hyp_backend::RendererBackend::GetPresentQueue(), &presentInfo);
+		m_CurrentFrame = (m_CurrentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
+	}
+
 
 	void PresentationSystem::CreateSwapChain()
 	{
@@ -64,22 +86,96 @@ namespace hypatia
 		m_SwapChainExtent = extent;
 	}
 
+	void PresentationSystem::CreateImageBuffer()
+	{
+		m_SwapChainImageViews.resize(m_SwapChainImages.size());
 
+		for (size_t i = 0; i < m_SwapChainImages.size(); i++) {
+			VkImageViewCreateInfo createInfo{};
+			createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+			createInfo.image = m_SwapChainImages[i];
+			createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+			createInfo.format = m_SwapChainImageFormat;
+			createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+			createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+			createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+			createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+			createInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+			createInfo.subresourceRange.baseMipLevel = 0;
+			createInfo.subresourceRange.levelCount = 1;
+			createInfo.subresourceRange.baseArrayLayer = 0;
+			createInfo.subresourceRange.layerCount = 1; 
+
+			if (vkCreateImageView(hyp_backend::RendererBackend::GetDevice(), &createInfo, nullptr, &m_SwapChainImageViews[i]) != VK_SUCCESS) {
+				throw std::runtime_error("failed to create image views!");
+			}
+		}
+	}
+
+	void PresentationSystem::CreateFrameBuffer()
+	{
+		m_SwapChainFramebuffers.resize(m_SwapChainImageViews.size());
+
+		for (size_t i = 0; i < m_SwapChainImageViews.size(); i++) {
+			VkImageView attachments[] = {
+				 m_SwapChainImageViews[i]
+			};
+
+			VkFramebufferCreateInfo framebufferInfo{};
+			framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+			framebufferInfo.renderPass = nullptr;
+			framebufferInfo.attachmentCount = 1;
+			framebufferInfo.pAttachments = attachments;
+			framebufferInfo.width = m_SwapChainExtent.width;
+			framebufferInfo.height = m_SwapChainExtent.height;
+			framebufferInfo.layers = 1;
+
+			if (vkCreateFramebuffer(hyp_backend::RendererBackend::GetDevice(), &framebufferInfo, nullptr, &m_SwapChainFramebuffers[i]) != VK_SUCCESS) {
+				throw std::runtime_error("failed to create framebuffer!");
+			}
+		}
+	}
 	VkSurfaceFormatKHR PresentationSystem::ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)
 	{
+		for (const auto& availableFormat : availableFormats) {
+			if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
+				return availableFormat;
+			}
+		}
 
+		return availableFormats[0];
 	}
 
 
 	VkPresentModeKHR PresentationSystem::ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes)
 	{
+		for (const auto& availablePresentMode : availablePresentModes) {
+			if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
+				return availablePresentMode;
+			}
+		}
 
+		return VK_PRESENT_MODE_FIFO_KHR;
 	}
 
 
 	VkExtent2D PresentationSystem::ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities)
 	{
+		if (capabilities.currentExtent.width != UINT32_MAX) {
+			return capabilities.currentExtent;
+		}
+		else {
+			VkExtent2D actualExtent = {
+				static_cast<uint32_t>(m_FrameBufferWidth),
+				static_cast<uint32_t>(m_FrameBufferHeight)
+			};
 
-	}
+			actualExtent.width = std::clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
+			actualExtent.height = std::clamp(actualExtent.height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
 
+			return actualExtent;
+		}
 }
+	
+
+

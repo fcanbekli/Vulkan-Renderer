@@ -1,5 +1,6 @@
 ﻿#pragma once
-
+#include "VulkanBackend/vkShader.h"
+#include "Material.h"
 
 namespace hypatia
 {
@@ -7,7 +8,9 @@ namespace hypatia
 	public:
 		ResourceLibrary(){}
 		void LoadAssets() {};
-
-
+		void LoadShaders();
+		void CreateMaterials();
+		std::vector<Material*> m_Materials;
+		std::vector<Shader*> m_Shaders;
 	};
 }

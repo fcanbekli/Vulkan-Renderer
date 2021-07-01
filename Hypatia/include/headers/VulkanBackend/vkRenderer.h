@@ -16,7 +16,8 @@ namespace hypatia
 {
 	namespace hyp_backend {
 
-		struct QueueFamilyIndices {
+		struct QueueFamilyIndices 
+		{
 			std::optional<uint32_t> graphicsFamily;
 			std::optional<uint32_t> presentFamily;
 
@@ -25,14 +26,12 @@ namespace hypatia
 			}
 		};
 
-		struct SwapChainSupportDetails {
+		struct SwapChainSupportDetails 
+		{
 			VkSurfaceCapabilitiesKHR capabilities; //Basic surface capabilities (min/max number of images in swap chain, min/max width and height of images)
 			std::vector<VkSurfaceFormatKHR> formats; //Surface formats (pixel format, color space)
 			std::vector<VkPresentModeKHR> presentModes; //Available presentation modes
 		};
-
-
-
 
 		class RendererBackend {
 			friend class PresentationSystem;
@@ -43,6 +42,8 @@ namespace hypatia
 
 
 			static VkDevice GetDevice() { return m_Device; }
+			static VkQueue GetGraphicsQueue() { return m_GraphicsQueue; }
+			static VkQueue GetPresentQueue() { return m_PresentQueue; }
 			static VkPhysicalDevice GetPhysicalDevice() { return m_PhysicalDevice; }
 			static SwapChainSupportDetails GetSwapChainSupportDetails() { return m_SwapChainSupportDetails; }
 			static VkSurfaceKHR GetSurface() { return m_Surface; }
@@ -68,9 +69,10 @@ namespace hypatia
 			VkPhysicalDeviceFeatures physicalDeviceFeatures;
 			VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties;
 			static VkDevice m_Device;
-			static VkQueue graphicsQueue;
-			static VkQueue presentQueue;
-			std::vector<const char*> extensions;
+			static VkQueue m_GraphicsQueue;
+			static VkQueue m_PresentQueue;
+			std::vector<const char*> m_Extensions;
+			std::vector<const char*> m_DeviceExtensions = { VK_KHR_SWAPCHAIN_EXTENSION_NAME };
 			static VkSurfaceKHR m_Surface;
 			static SwapChainSupportDetails m_SwapChainSupportDetails;
 

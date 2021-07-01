@@ -60,8 +60,8 @@ namespace hypatia
 			createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 			createInfo.pApplicationInfo = &appInfo;
 
-			createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
-			createInfo.ppEnabledExtensionNames = extensions.data();
+			createInfo.enabledExtensionCount = static_cast<uint32_t>(m_Extensions.size());
+			createInfo.ppEnabledExtensionNames = m_Extensions.data();
 			createInfo.enabledLayerCount = 0;
 			createInfo.pNext = nullptr;
 
@@ -171,7 +171,7 @@ namespace hypatia
 			std::vector<VkExtensionProperties> availableExtensions(extensionCount);
 			vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data());
 
-			std::set<std::string> requiredExtensions(image_data.deviceExtensions.begin(), image_data.deviceExtensions.end());
+			std::set<std::string> requiredExtensions(m_DeviceExtensions.begin(), m_DeviceExtensions.end());
 
 			for (const auto& extension : availableExtensions) {
 				requiredExtensions.erase(extension.extensionName);

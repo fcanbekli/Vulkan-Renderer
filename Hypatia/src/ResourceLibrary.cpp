@@ -3,4 +3,14 @@
 namespace hypatia
 {
 
+	void ResourceLibrary::LoadShaders()
+	{
+
+	}
+
+	void ResourceLibrary::CreateMaterials()
+	{
+
+	}
+
 }
