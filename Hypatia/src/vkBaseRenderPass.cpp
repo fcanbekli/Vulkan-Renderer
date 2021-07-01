@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "VulkanBackend/vkBaseRenderPass.h"
 
-namespace hyp_vlk
+namespace hypatia
 {
 	namespace hyp_backend {
 		void BaseRenderPass::InitRenderPass()

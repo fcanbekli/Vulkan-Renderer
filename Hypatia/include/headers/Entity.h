@@ -3,10 +3,10 @@
 #include "pch.h"
 #ifdef USE_VULKAN
 #include "VulkanBackend/vkData.h"
-using namespace hyp_vlk;
+using namespace hypatia;
 #endif
 
-namespace hyp_vlk{
+namespace hypatia{
 	namespace hyp_backend {
 
 		class Entity {

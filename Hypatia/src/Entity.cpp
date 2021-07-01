@@ -1,6 +1,6 @@
-﻿#include "VulkanBackend/vkEntity.h"
+﻿#include "Entity.h"
 
-namespace hyp_vlk {
+namespace hypatia {
 	namespace hyp_backend {
 		Entity::Entity(std::string entityName)
 		{

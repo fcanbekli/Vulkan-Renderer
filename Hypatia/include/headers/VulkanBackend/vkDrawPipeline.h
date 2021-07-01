@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "PipelineDesc.h"
 
-namespace hyp_vlk
+namespace hypatia
 {
 	namespace hyp_backend {
 		using namespace hypatia;

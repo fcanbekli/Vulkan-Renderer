@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "VulkanBackend/vkEntity.h"
+#include "Entity.h"
 #ifdef USE_VULKAN
 #include "VulkanBackend/vkData.h"
 #endif
 
-namespace hyp_vlk
+namespace hypatia
 {
 	namespace hyp_backend {
 		class BaseRenderPass {

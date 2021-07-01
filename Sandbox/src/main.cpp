@@ -38,7 +38,7 @@ int main()
 	auto uiDesc = std::make_shared<hypatia::PIPELINE_UI_DESC>();
 	auto postProcessDesc = std::make_shared<hypatia::PIPELINE_POSTPROCESS_DESC>();
 
-	hyp_vlk::hyp_backend::device_data.extensions = getRequiredExtensions();
+	hyp_backend::device_data.extensions = getRequiredExtensions();
 
 	drawDesc->hwnd = glfwGetWin32Window(window);
 	drawDesc->hInstance = GetModuleHandle(nullptr);
@@ -50,12 +50,9 @@ int main()
 	pipelineDesc.computeDesc = computeDesc;
 	pipelineDesc.uiDesc = uiDesc;
 	pipelineDesc.postProcessDesc = postProcessDesc;
-	status = hypatiaRenderer->CreateRenderer(pipelineDesc);
-	
-	hypatiaRenderer->m_renderer.InitRenderer();
 
-	hyp_vlk::hyp_backend::Entity* entity = new hyp_vlk::hyp_backend::Entity("Test Entity");
-	hypatiaRenderer->m_renderer.m_SceneGraph.addNewEntity(entity);
+
+
 
 	
 	while (true)

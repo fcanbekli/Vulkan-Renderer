@@ -3,12 +3,23 @@
 namespace hypatia {
 	void Hypatia::Render()
 	{
-		m_renderer.Render();
+		// Get "Next Image"
+		
+		// Build Frame
+
+		// Present "Next Image"
 	}
 
-	hpyStatus Hypatia::CreateRenderer(PIPELINE_DESC pipelineDesc)
+	hpyStatus Hypatia::InitializeRenderer(PIPELINE_DESC pipelineDesc)
 	{
-		m_renderer.SyncRendererOptions(pipelineDesc);
+		//SceneGraph
+
+		//Framebuffer
+		m_FrameGraph.BindSceneGraph(&m_SceneGraph);
+		//Library
+		m_ResourceLibrary.LoadAssets();
+		//Backend
+		m_RendererBackend.SyncRendererOptions(pipelineDesc);
 		return khpySuccess;
 	}
 

@@ -1,10 +1,6 @@
 ﻿#pragma once
 
-#ifdef USE_VULKAN
-#include "VulkanBackend/vkEntity.h"
-using namespace hyp_vlk;
-#endif
-
+#include "Entity.h"
 
 namespace hypatia
 {

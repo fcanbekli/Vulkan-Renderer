@@ -1,6 +1,6 @@
 ﻿#include "VulkanBackend/vkData.h"
 
-namespace hyp_vlk
+namespace hypatia
 {
 	namespace hyp_backend {
 		DeviceData device_data;
