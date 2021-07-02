@@ -1,16 +1,12 @@
 ﻿#pragma once
 
-namespace hypatia
-{
-	namespace hyp_backend {
 
-		class IRenderPass {
-		public:
-			IRenderPass(){}
-			void virtual InitRenderPass();
-			void virtual Draw(uint32_t nextImageIndex);
+namespace hyp_backend {
 
-		};
-	}
+	class IRenderPass {
+	public:
+		IRenderPass() {}
+		void virtual InitRenderPass() = 0;
+		void virtual Draw(uint32_t nextImageIndex) = 0;
+	};
 }
-

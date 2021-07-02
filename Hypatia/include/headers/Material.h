@@ -1,12 +1,13 @@
 ﻿#pragma once
 #include "pch.h"
+#include "VulkanBackend/vkShader.h"
 
-namespace hypatia{
-	namespace hyp_backend {
-
-		class Material {
-		public:
-			Material(){}
-		};
-	}
+namespace hypatia {
+	class Material {
+	public:
+		Material(hyp_backend::Shader* shader);
+		hyp_backend::Shader* m_Shader;
+		
+	};
 }
+

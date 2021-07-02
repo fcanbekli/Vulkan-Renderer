@@ -1,17 +1,14 @@
 ﻿#pragma once
 #include "PipelineDesc.h"
 
-namespace hypatia
-{
-	namespace hyp_backend {
-		using namespace hypatia;
-		class UIPipeline{
-		public:
-			UIPipeline(std::shared_ptr<PIPELINE_UI_DESC> uiDesc) { this->m_uiDesc = uiDesc; }
+namespace hyp_backend {
+	using namespace hypatia;
+	class UIPipeline {
+	public:
+		UIPipeline(std::shared_ptr<PIPELINE_UI_DESC> uiDesc) { this->m_uiDesc = uiDesc; }
 
-			std::shared_ptr<PIPELINE_UI_DESC> m_uiDesc;
+		std::shared_ptr<PIPELINE_UI_DESC> m_uiDesc;
 
-			void Exec() { printf("UI Pipeline Worked \n"); };
-		};
-	}
+		void Exec() { printf("UI Pipeline Worked \n"); };
+	};
 }

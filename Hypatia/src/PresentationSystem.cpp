@@ -6,6 +6,27 @@ namespace hypatia
 	const static int MAX_FRAMES_IN_FLIGHT = 2;
 	size_t PresentationSystem::m_CurrentFrame = 0;
 
+	uint32_t  PresentationSystem::m_ImageIndex;
+	VkSwapchainKHR  PresentationSystem::m_SwapChain;
+	std::vector<VkFramebuffer>  PresentationSystem::m_SwapChainFramebuffers;
+	VkFormat  PresentationSystem::m_SwapChainImageFormat;
+	VkExtent2D  PresentationSystem::m_SwapChainExtent;
+
+	void PresentationSystem::InitializePresentationSystem()
+	{
+		CreateSwapChain();
+		CreateImageBuffer();
+		CreateFrameBuffer();
+	}
+
+	void PresentationSystem::SyncRendererOptions(PIPELINE_DESC* pipelineDesc)
+	{
+		m_PipelineDesc = pipelineDesc;
+
+		m_FrameBufferHeight = pipelineDesc->frameBufferHeight;
+		m_FrameBufferWidth = pipelineDesc->frameBufferWidth;
+	}
+
 	uint32_t PresentationSystem::GetNextImage()
 	{
 		vkAcquireNextImageKHR(hyp_backend::RendererBackend::GetDevice(), m_SwapChain, UINT64_MAX, nullptr, VK_NULL_HANDLE, &m_ImageIndex);
@@ -30,7 +51,6 @@ namespace hypatia
 		m_CurrentFrame = (m_CurrentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 	}
 
-
 	void PresentationSystem::CreateSwapChain()
 	{
 		hyp_backend::SwapChainSupportDetails swapChainSupport = hyp_backend::RendererBackend::GetSwapChainSupportDetails();
@@ -40,7 +60,8 @@ namespace hypatia
 		VkExtent2D extent = ChooseSwapExtent(swapChainSupport.capabilities);
 
 		uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 1;
-		if (swapChainSupport.capabilities.maxImageCount > 0 && imageCount > swapChainSupport.capabilities.maxImageCount) {
+		if (swapChainSupport.capabilities.maxImageCount > 0 && imageCount > swapChainSupport.capabilities.maxImageCount) 
+		{
 			imageCount = swapChainSupport.capabilities.maxImageCount;
 		}
 
@@ -58,12 +79,14 @@ namespace hypatia
 		hyp_backend::QueueFamilyIndices indices = hyp_backend::RendererBackend::FindQueueFamilies(hyp_backend::RendererBackend::GetPhysicalDevice());
 		uint32_t queueFamilyIndices[] = { indices.graphicsFamily.value(), indices.presentFamily.value() };
 
-		if (indices.graphicsFamily != indices.presentFamily) {
+		if (indices.graphicsFamily != indices.presentFamily) 
+		{
 			createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
 			createInfo.queueFamilyIndexCount = 2;
 			createInfo.pQueueFamilyIndices = queueFamilyIndices;
 		}
-		else {
+		else 
+		{
 			createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 		}
 
@@ -74,7 +97,8 @@ namespace hypatia
 
 		createInfo.oldSwapchain = VK_NULL_HANDLE;
 
-		if (vkCreateSwapchainKHR(hyp_backend::RendererBackend::GetDevice(), &createInfo, nullptr, &m_SwapChain) != VK_SUCCESS) {
+		if (vkCreateSwapchainKHR(hyp_backend::RendererBackend::GetDevice(), &createInfo, nullptr, &m_SwapChain) != VK_SUCCESS) 
+		{
 			throw std::runtime_error("failed to create swap chain!");
 		}
 
@@ -106,7 +130,8 @@ namespace hypatia
 			createInfo.subresourceRange.baseArrayLayer = 0;
 			createInfo.subresourceRange.layerCount = 1; 
 
-			if (vkCreateImageView(hyp_backend::RendererBackend::GetDevice(), &createInfo, nullptr, &m_SwapChainImageViews[i]) != VK_SUCCESS) {
+			if (vkCreateImageView(hyp_backend::RendererBackend::GetDevice(), &createInfo, nullptr, &m_SwapChainImageViews[i]) != VK_SUCCESS) 
+			{
 				throw std::runtime_error("failed to create image views!");
 			}
 		}
@@ -116,29 +141,34 @@ namespace hypatia
 	{
 		m_SwapChainFramebuffers.resize(m_SwapChainImageViews.size());
 
-		for (size_t i = 0; i < m_SwapChainImageViews.size(); i++) {
-			VkImageView attachments[] = {
+		for (size_t i = 0; i < m_SwapChainImageViews.size(); i++) 
+		{
+			VkImageView attachments[] = 
+			{
 				 m_SwapChainImageViews[i]
 			};
 
 			VkFramebufferCreateInfo framebufferInfo{};
 			framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-			framebufferInfo.renderPass = nullptr;
+			//framebufferInfo.renderPass = FrameGraph::GetRenderPass(ERenderLayer::kBaseLayer);
 			framebufferInfo.attachmentCount = 1;
 			framebufferInfo.pAttachments = attachments;
 			framebufferInfo.width = m_SwapChainExtent.width;
 			framebufferInfo.height = m_SwapChainExtent.height;
 			framebufferInfo.layers = 1;
 
-			if (vkCreateFramebuffer(hyp_backend::RendererBackend::GetDevice(), &framebufferInfo, nullptr, &m_SwapChainFramebuffers[i]) != VK_SUCCESS) {
+			if (vkCreateFramebuffer(hyp_backend::RendererBackend::GetDevice(), &framebufferInfo, nullptr, &m_SwapChainFramebuffers[i]) != VK_SUCCESS) 
+			{
 				throw std::runtime_error("failed to create framebuffer!");
 			}
 		}
 	}
 	VkSurfaceFormatKHR PresentationSystem::ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)
 	{
-		for (const auto& availableFormat : availableFormats) {
-			if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
+		for (const auto& availableFormat : availableFormats) 
+		{
+			if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) 
+			{
 				return availableFormat;
 			}
 		}
@@ -149,8 +179,10 @@ namespace hypatia
 
 	VkPresentModeKHR PresentationSystem::ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes)
 	{
-		for (const auto& availablePresentMode : availablePresentModes) {
-			if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
+		for (const auto& availablePresentMode : availablePresentModes) 
+		{
+			if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) 
+			{
 				return availablePresentMode;
 			}
 		}
@@ -161,11 +193,13 @@ namespace hypatia
 
 	VkExtent2D PresentationSystem::ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities)
 	{
-		if (capabilities.currentExtent.width != UINT32_MAX) {
+		if (capabilities.currentExtent.width != UINT32_MAX)
+		{
 			return capabilities.currentExtent;
 		}
 		else {
-			VkExtent2D actualExtent = {
+			VkExtent2D actualExtent =
+			{
 				static_cast<uint32_t>(m_FrameBufferWidth),
 				static_cast<uint32_t>(m_FrameBufferHeight)
 			};
@@ -175,7 +209,5 @@ namespace hypatia
 
 			return actualExtent;
 		}
+	}
 }
-	
-
-

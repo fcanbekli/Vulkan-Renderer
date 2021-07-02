@@ -3,9 +3,11 @@
 
 namespace hypatia
 {
+	std::vector<hyp_backend::IRenderPass*> FrameGraph::m_RenderPasses;
+
 	void FrameGraph::InitializeRenderPasses(SceneGraph* sceneGraph)
 	{
-		m_RenderPasses.push_back(new BaseRenderPass(sceneGraph));
+		m_RenderPasses.push_back(new hyp_backend::BaseRenderPass(sceneGraph));
 		
 	}
 
@@ -14,7 +16,7 @@ namespace hypatia
 		switch (layer)
 		{
 		case hypatia::ERenderLayer::kBaseLayer:
-			return static_cast<BaseRenderPass*>(m_RenderPasses.at(0))->m_Renderpass;
+			return static_cast<hyp_backend::BaseRenderPass*>(m_RenderPasses.at(0))->m_Renderpass;
 			break;
 		default:
 			break;
@@ -23,7 +25,7 @@ namespace hypatia
 
 	void FrameGraph::BuildFrame()
 	{
-		for(IRenderPass* pass : m_RenderPasses) 
+		for(hyp_backend::IRenderPass* pass : m_RenderPasses)
 		{
 			pass->Draw(m_NextImageIndex);
 		}

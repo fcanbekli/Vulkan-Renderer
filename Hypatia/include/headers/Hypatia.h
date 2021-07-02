@@ -1,34 +1,27 @@
 ﻿#pragma once
+#include "VulkanBackend/vkRenderer.h"
+#include "PresentationSystem.h"
 #include "PipelineDesc.h"
+#include <hpyStatus.h>
 #include "ResourceLibrary.h"
 #include "FrameGraph.h"
-#include "PresentationSystem.h"
-#include <hpyStatus.h>
-#include "VulkanBackend/vkData.h"
-
-#define USE_VULKAN = 1
-
-#ifdef USE_VULKAN
-#include "VulkanBackend/vkRenderer.h"
-#endif
-
-
-
 
 namespace hypatia {
 	class Hypatia {
 public:
 	Hypatia() {};
 
+	hpyStatus InitializeRenderer(PIPELINE_DESC* pipelineDesc);
 	void Render();
-
-	SceneGraph m_SceneGraph;
+	ResourceLibrary GetResourceLibrary() { return m_ResourceLibrary; };
+	SceneGraph GetSceneGraph() { return m_SceneGraph; };
+private:
 	hyp_backend::RendererBackend m_RendererBackend;
+	SceneGraph m_SceneGraph;
+
 	FrameGraph m_FrameGraph;
 	ResourceLibrary m_ResourceLibrary;
-	PresentationSystem m_PresentationSystem;
-
-
-	hpyStatus InitializeRenderer(PIPELINE_DESC pipelineDesc);
+	PresentationSystem m_PresentationSystem;	
+	PIPELINE_DESC* m_PipelineDesc;
 };
 }

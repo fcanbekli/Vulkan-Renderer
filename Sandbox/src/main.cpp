@@ -1,6 +1,5 @@
 #include "Hypatia.h"
 
-
 std::vector<const char*> getRequiredExtensions() {
 	uint32_t glfwExtensionCount = 0;
 	const char** glfwExtensions;
@@ -31,30 +30,19 @@ int main()
 	}
 
 	hypatia::Hypatia* hypatiaRenderer = new hypatia::Hypatia();
-	hypatia::hpyStatus status;
-
-	auto computeDesc = std::make_shared<hypatia::PIPELINE_COMPUTE_DESC>();
-	auto drawDesc = std::make_shared<hypatia::PIPELINE_DRAW_DESC>();
-	auto uiDesc = std::make_shared<hypatia::PIPELINE_UI_DESC>();
-	auto postProcessDesc = std::make_shared<hypatia::PIPELINE_POSTPROCESS_DESC>();
-
-	hyp_backend::device_data.extensions = getRequiredExtensions();
-
-	drawDesc->hwnd = glfwGetWin32Window(window);
-	drawDesc->hInstance = GetModuleHandle(nullptr);
-	drawDesc->extensions = getRequiredExtensions();
-	glfwGetFramebufferSize(window, &drawDesc->frameBufferWidth, &drawDesc->frameBufferHeight);
 
 	hypatia::PIPELINE_DESC pipelineDesc = {};
-	pipelineDesc.drawDesc = drawDesc;
-	pipelineDesc.computeDesc = computeDesc;
-	pipelineDesc.uiDesc = uiDesc;
-	pipelineDesc.postProcessDesc = postProcessDesc;
+	pipelineDesc.hwnd = glfwGetWin32Window(window);
+	pipelineDesc.hInstance = GetModuleHandle(nullptr);
+	pipelineDesc.extensions = getRequiredExtensions();
+	glfwGetFramebufferSize(window, &pipelineDesc.frameBufferWidth, &pipelineDesc.frameBufferHeight);
 
+	hypatiaRenderer->InitializeRenderer(&pipelineDesc);
 
+	//hypatia::Entity* entity = new hypatia::Entity();
+	//entity->m_Material = hypatiaRenderer->GetResourceLibrary().m_Materials.at(0);
+	//hypatiaRenderer->GetSceneGraph().addNewEntity(entity);
 
-
-	
 	while (true)
 	{
 		hypatiaRenderer->Render();

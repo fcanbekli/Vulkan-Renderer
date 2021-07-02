@@ -1,14 +1,18 @@
 ﻿#pragma once
 #include "pch.h"
-#include "FrameGraph.h"
+#include "PresentationSystem.h"
+#include "VulkanBackend/vkRenderer.h"
 
-namespace hypatia{
-	namespace hyp_backend {
+namespace hyp_backend {
+	class Shader {
+	public:
+		Shader(const std::string& vertexPath, const std::string& fragmentPath);
 
-		class Shader {
-		public:
-			Shader(const std::string& vertexPath, const std::string& fragmentPath) {}
-			VkPipeline m_Pipeline;
-		};
-	}
+		VkPipeline m_Pipeline;
+		VkPipelineLayout m_PipelineLayout;
+	private:
+		void CreateGraphicsPipeline(const std::string& vertexPath, const std::string& fragmentPath);
+		VkShaderModule CreateShaderModule(const std::vector<char>& code);
+		std::vector<char> ReadFile(const std::string& filename);
+	};
 }

@@ -5,11 +5,7 @@ namespace hypatia
 {
 	typedef struct PIPELINE_DRAW_DESC
 	{
-		HWND hwnd;
-		HINSTANCE hInstance;
-		std::vector<const char*> extensions;
-		int frameBufferWidth;
-		int frameBufferHeight;
+	
 	}PIPELINE_DRAW_DESC;
 	
 	typedef struct PIPELINE_COMPUTE_DESC
@@ -29,9 +25,10 @@ namespace hypatia
 
 	typedef struct PIPELINE_DESC
 	{
-		std::shared_ptr<PIPELINE_DRAW_DESC> drawDesc;
-		std::shared_ptr<PIPELINE_COMPUTE_DESC> computeDesc;
-		std::shared_ptr<PIPELINE_UI_DESC> uiDesc;
-		std::shared_ptr<PIPELINE_POSTPROCESS_DESC> postProcessDesc;
+		HWND hwnd;
+		HINSTANCE hInstance;
+		std::vector<const char*> extensions;
+		int frameBufferWidth;
+		int frameBufferHeight;
 	}PIPELINE_DESC;
 }
