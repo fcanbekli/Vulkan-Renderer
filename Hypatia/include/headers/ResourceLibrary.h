@@ -8,7 +8,7 @@ namespace hypatia
 	public:
 		ResourceLibrary(){}
 
-		void LoadAssets() {};
+		void LoadAssets();
 		void LoadShaders();
 		void CreateMaterials();
 

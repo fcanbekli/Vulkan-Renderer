@@ -39,9 +39,9 @@ int main()
 
 	hypatiaRenderer->InitializeRenderer(&pipelineDesc);
 
-	//hypatia::Entity* entity = new hypatia::Entity();
-	//entity->m_Material = hypatiaRenderer->GetResourceLibrary().m_Materials.at(0);
-	//hypatiaRenderer->GetSceneGraph().addNewEntity(entity);
+	hypatia::Entity* entity = new hypatia::Entity();
+	entity->m_Material = hypatiaRenderer->GetResourceLibrary().m_Materials.at(0);
+	hypatiaRenderer->GetSceneGraph().addNewEntity(entity);
 
 	while (true)
 	{

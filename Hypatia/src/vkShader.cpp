@@ -108,7 +108,7 @@ namespace hyp_backend {
 		pipelineInfo.pMultisampleState = &multisampling;
 		pipelineInfo.pColorBlendState = &colorBlending;
 		pipelineInfo.layout = m_PipelineLayout;
-		pipelineInfo.renderPass = nullptr; //hypatia::FrameGraph::GetRenderPass(ERenderLayer::kBaseLayer);
+		pipelineInfo.renderPass = RenderPass::m_BaseRenderPass;
 		pipelineInfo.subpass = 0;
 		pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 

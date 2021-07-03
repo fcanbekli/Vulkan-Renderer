@@ -1,6 +1,4 @@
 ﻿#pragma once
-
-
 namespace hyp_backend {
 
 	class IRenderPass {

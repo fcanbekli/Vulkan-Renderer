@@ -16,7 +16,6 @@ namespace hypatia
 	{
 		CreateSwapChain();
 		CreateImageBuffer();
-		CreateFrameBuffer();
 	}
 
 	void PresentationSystem::SyncRendererOptions(PIPELINE_DESC* pipelineDesc)
@@ -150,7 +149,7 @@ namespace hypatia
 
 			VkFramebufferCreateInfo framebufferInfo{};
 			framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-			//framebufferInfo.renderPass = FrameGraph::GetRenderPass(ERenderLayer::kBaseLayer);
+			framebufferInfo.renderPass = hyp_backend::RenderPass::m_BaseRenderPass;
 			framebufferInfo.attachmentCount = 1;
 			framebufferInfo.pAttachments = attachments;
 			framebufferInfo.width = m_SwapChainExtent.width;

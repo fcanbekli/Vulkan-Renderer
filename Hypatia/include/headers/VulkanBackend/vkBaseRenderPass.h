@@ -4,6 +4,7 @@
 #include "vkRenderer.h"
 #include "PresentationSystem.h"
 #include "SceneGraph.h"
+#include "vkRenderPass.h"
 
 namespace hyp_backend {
 	class BaseRenderPass : public IRenderPass {
@@ -11,8 +12,6 @@ namespace hyp_backend {
 		BaseRenderPass(hypatia::SceneGraph* _sceneGraph);
 		hypatia::SceneGraph* m_SceneGraph;
 		void InitRenderPass() override;
-		VkFramebuffer m_FrameBuffer;
-		VkRenderPass m_Renderpass;
 		//image
 		//image view
 		void Draw(uint32_t nextImageIndex) override;

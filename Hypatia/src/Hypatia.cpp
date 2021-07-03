@@ -21,10 +21,13 @@ namespace hypatia {
 		//Presentation
 		m_PresentationSystem.SyncRendererOptions(pipelineDesc);
 		m_PresentationSystem.InitializePresentationSystem();
-		//Framebuffer
+		//Render Passes
 		m_FrameGraph.InitializeRenderPasses(&m_SceneGraph);
+		//Framebuffer
+		m_PresentationSystem.CreateFrameBuffer();
 		//Library
 		m_ResourceLibrary.LoadAssets();
+
 
 		return khpySuccess;
 	}

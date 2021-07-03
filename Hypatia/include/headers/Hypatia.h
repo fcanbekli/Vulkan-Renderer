@@ -14,7 +14,7 @@ public:
 	hpyStatus InitializeRenderer(PIPELINE_DESC* pipelineDesc);
 	void Render();
 	ResourceLibrary GetResourceLibrary() { return m_ResourceLibrary; };
-	SceneGraph GetSceneGraph() { return m_SceneGraph; };
+	SceneGraph& GetSceneGraph() { return m_SceneGraph; };
 private:
 	hyp_backend::RendererBackend m_RendererBackend;
 	SceneGraph m_SceneGraph;

@@ -14,8 +14,7 @@ namespace hypatia
 		void BuildFrame();
 		void InitializeRenderPasses(SceneGraph* sceneGraph);
 		void SetNextImage(uint32_t nextImageIndex) { this->m_NextImageIndex = nextImageIndex; }
-		static VkRenderPass GetRenderPass(ERenderLayer layer);
-		
+	
 		uint32_t m_NextImageIndex;
 		static std::vector<hyp_backend::IRenderPass*> m_RenderPasses;	
 	};

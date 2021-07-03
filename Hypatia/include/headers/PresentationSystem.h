@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "VulkanBackend/vkRenderer.h"
+#include "VulkanBackend/vkRenderPass.h"
 
 namespace hypatia
 {
@@ -10,6 +11,7 @@ namespace hypatia
 		PresentationSystem(){}
 		void PresentFrame();
 		void InitializePresentationSystem();
+		void CreateFrameBuffer();
 		void SyncRendererOptions(PIPELINE_DESC* pipelineDesc);
 		static uint32_t GetNextImage();
 		static size_t GetCurrentFrame() { return m_CurrentFrame;  }
@@ -32,7 +34,6 @@ namespace hypatia
 
 		void CreateSwapChain();
 		void CreateImageBuffer();
-		void CreateFrameBuffer();
 		VkSurfaceFormatKHR ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 		VkPresentModeKHR ChooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 		VkExtent2D ChooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);

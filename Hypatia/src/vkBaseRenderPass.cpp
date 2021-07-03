@@ -37,7 +37,7 @@ namespace hyp_backend {
 		renderPassInfo.subpassCount = 1;
 		renderPassInfo.pSubpasses = &subpass;
 
-		if (vkCreateRenderPass(RendererBackend::GetDevice(), &renderPassInfo, nullptr, &m_Renderpass) != VK_SUCCESS) {
+		if (vkCreateRenderPass(RendererBackend::GetDevice(), &renderPassInfo, nullptr, &RenderPass::m_BaseRenderPass) != VK_SUCCESS) {
 			throw std::runtime_error("failed to create render pass!");
 		}
 	}
@@ -55,7 +55,7 @@ namespace hyp_backend {
 
 			VkRenderPassBeginInfo renderPassInfo{};
 			renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-			renderPassInfo.renderPass = m_Renderpass;
+			renderPassInfo.renderPass = RenderPass::m_BaseRenderPass;
 			renderPassInfo.framebuffer = hypatia::PresentationSystem::GetSwapChainFrameBuffers().at(nextImageIndex);
 			renderPassInfo.renderArea.offset = { 0, 0 };
 			renderPassInfo.renderArea.extent = hypatia::PresentationSystem::GetSwapChainExtent();
