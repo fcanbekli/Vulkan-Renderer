@@ -7,12 +7,18 @@ namespace hypatia
 	void ResourceLibrary::LoadAssets()
 	{
 		LoadShaders();
+		LoadModels();
 		CreateMaterials();
 	}
 
 	void ResourceLibrary::LoadShaders()
 	{
 		m_Shaders.push_back(new hyp_backend::Shader("../../Hypatia/res/shaders/vertex_shader.spv", "../../Hypatia/res/shaders/fragment_shader.spv"));
+	}
+
+	void ResourceLibrary::LoadModels()
+	{
+		m_Models.push_back(new hyp_backend::Model());
 	}
 
 	void ResourceLibrary::CreateMaterials()

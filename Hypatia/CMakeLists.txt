@@ -43,6 +43,14 @@ add_subdirectory("${GLFW_DIR}")
 target_link_libraries(${PROJECT_NAME} "glfw" "${GLFW_LIBRARIES}")
 target_compile_definitions(${PROJECT_NAME} PUBLIC "GLFW_INCLUDE_NONE")
 
+
+#GLM
+set(GLM_DIR "${VENDOR_DIR}/glm")
+add_subdirectory("${GLM_DIR}")
+#target_include_directories(${PROJECT_NAME} PRIVATE "${GLM_DIR}/glm")
+target_link_libraries(${PROJECT_NAME} glm)	
+
+
 if(MSVC)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 endif(MSVC)

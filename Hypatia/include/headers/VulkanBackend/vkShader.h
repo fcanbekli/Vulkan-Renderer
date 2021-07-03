@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "pch.h"
+#include "vkModel.h"
 #include "PresentationSystem.h"
 #include "VulkanBackend/vkRenderer.h"
 
