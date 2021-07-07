@@ -37,18 +37,27 @@ namespace hyp_backend {
 	public:
 		Model();
 		const std::vector<Vertex> m_Vertices = {
-			{{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-			{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
-			{{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
+			{{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+			{{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
+			{{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
+			{{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}
+		};
+
+		const std::vector<uint16_t> m_Indices = {
+			0, 1, 2, 2, 3, 0
 		};
 
 		void Load();
 		void CreateVertexBuffer();
+		void CreateIndexBuffer();
 		VkBuffer GetVertexBuffer() { return m_VertexBuffer; }
 		std::vector<Vertex> GetVertexData() { return m_Vertices; }
-
+		VkBuffer m_VertexBuffer;
+		VkBuffer m_IndexBuffer;
 		private:
+			void CopyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 			VkDeviceMemory m_VertexBufferMemory;
-			VkBuffer m_VertexBuffer;
+
+			VkDeviceMemory m_IndexBufferMemory;
 	};
 }

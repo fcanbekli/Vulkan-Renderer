@@ -72,6 +72,10 @@ namespace hyp_backend {
 			VkDeviceSize offsets[] = { 0 };
 			vkCmdBindVertexBuffers(m_SceneGraph->m_Entities.at(i)->m_CommandBuffer, 0, 1, vertexBuffers, offsets);
 
+			vkCmdBindIndexBuffer(m_SceneGraph->m_Entities.at(i)->m_CommandBuffer, m_SceneGraph->m_Entities.at(i)->m_Model->m_IndexBuffer, 0, VK_INDEX_TYPE_UINT16);
+
+			vkCmdDrawIndexed(m_SceneGraph->m_Entities.at(i)->m_CommandBuffer, static_cast<uint32_t>(m_SceneGraph->m_Entities.at(i)->m_Model->m_Indices.size()), 1, 0, 0, 0);
+
 			vkCmdDraw(m_SceneGraph->m_Entities.at(i)->m_CommandBuffer, static_cast<uint32_t>(m_SceneGraph->m_Entities.at(i)->m_Model->GetVertexData().size()), 1, 0, 0);
 
 			vkCmdEndRenderPass(m_SceneGraph->m_Entities.at(i)->m_CommandBuffer);
