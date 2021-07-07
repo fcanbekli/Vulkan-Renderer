@@ -10,6 +10,7 @@ namespace hyp_backend {
 	VkQueue RendererBackend::m_PresentQueue;
 	VkSurfaceKHR RendererBackend::m_Surface;
 	SwapChainSupportDetails RendererBackend::m_SwapChainSupportDetails;
+	RenderLayers RendererBackend::m_RenderLayers;
 
 	void RendererBackend::InitalizeRendererBackend()
 	{
@@ -173,6 +174,18 @@ namespace hyp_backend {
 		}
 
 		return indices.isComplete() && extensionsSupported && swapChainAdequate;
+	}
+
+	VkRenderPass RendererBackend::GetRenderLayer(ERenderLayer renderLayer)
+	{
+		switch (renderLayer)
+		{
+		case hypatia::ERenderLayer::kBaseLayer:
+			return m_RenderLayers.m_BaseRenderPass;
+			break;
+		default:
+			break;
+		}
 	}
 
 	QueueFamilyIndices RendererBackend::FindQueueFamilies(VkPhysicalDevice device)

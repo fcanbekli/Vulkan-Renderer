@@ -149,7 +149,7 @@ namespace hypatia
 
 			VkFramebufferCreateInfo framebufferInfo{};
 			framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-			framebufferInfo.renderPass = hyp_backend::RenderPass::m_BaseRenderPass;
+			framebufferInfo.renderPass = hyp_backend::RendererBackend::GetRenderLayer(ERenderLayer::kBaseLayer);
 			framebufferInfo.attachmentCount = 1;
 			framebufferInfo.pAttachments = attachments;
 			framebufferInfo.width = m_SwapChainExtent.width;

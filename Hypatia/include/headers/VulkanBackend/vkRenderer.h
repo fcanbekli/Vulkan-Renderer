@@ -3,6 +3,8 @@
 #include "VulkanBackend/vkUIPipeline.h"
 #include "VulkanBackend/vkPostPipeline.h"
 #include "VulkanBackend/vkDrawPipeline.h"
+#include <VulkanBackend/vkRenderPass.h>
+#include <ERenderLayer.h>
 
 namespace hyp_backend
 {
@@ -37,11 +39,14 @@ namespace hyp_backend
 		static VkPhysicalDevice GetPhysicalDevice() { return m_PhysicalDevice; }
 		static VkQueue GetGraphicsQueue() { return m_GraphicsQueue; }
 		static VkQueue GetPresentQueue() { return m_PresentQueue; }
+		static VkRenderPass GetRenderLayer(ERenderLayer renderLayer);
 
 		static VkSurfaceKHR GetSurface() { return m_Surface; }
 		static VkCommandPool GetCommandPool() { return m_CommandPool; };
 		static SwapChainSupportDetails GetSwapChainSupportDetails() { return m_SwapChainSupportDetails; }
 		static QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
+		static RenderLayers m_RenderLayers;
+
 
 		static uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 		static void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);

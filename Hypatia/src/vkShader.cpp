@@ -194,7 +194,7 @@ namespace hyp_backend {
 		pipelineInfo.pMultisampleState = &multisampling;
 		pipelineInfo.pColorBlendState = &colorBlending;
 		pipelineInfo.layout = m_PipelineLayout;
-		pipelineInfo.renderPass = RenderPass::m_BaseRenderPass;
+		pipelineInfo.renderPass = RendererBackend::GetRenderLayer(ERenderLayer::kBaseLayer);
 		pipelineInfo.subpass = 0;
 		pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
