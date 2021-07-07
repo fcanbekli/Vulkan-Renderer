@@ -4,11 +4,92 @@ namespace hyp_backend {
 
 	Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 	{
+		CreateUniformBuffers();
+		CreateDescriptor();
 		CreateGraphicsPipeline(vertexPath, fragmentPath);
 	}
 
+
+	void Shader::CreateDescriptor()
+	{
+		//***************
+		//Descriptor Layout
+		VkDescriptorSetLayoutBinding uboLayoutBinding{};
+		uboLayoutBinding.binding = 0;
+		uboLayoutBinding.descriptorCount = 1;
+		uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+		uboLayoutBinding.pImmutableSamplers = nullptr;
+		uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+
+		VkDescriptorSetLayoutCreateInfo layoutInfo{};
+		layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+		layoutInfo.bindingCount = 1;
+		layoutInfo.pBindings = &uboLayoutBinding;
+
+		if (vkCreateDescriptorSetLayout(RendererBackend::GetDevice(), &layoutInfo, nullptr, &m_DescriptorSetLayout) != VK_SUCCESS) {
+			throw std::runtime_error("failed to create descriptor set layout!");
+		}
+
+		//***************
+		//Descriptor Pool //TODO: Move Descriptor Pool to Global
+		VkDescriptorPoolSize poolSize{};
+		poolSize.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+		poolSize.descriptorCount = 1;
+
+		VkDescriptorPoolCreateInfo poolInfo{};
+		poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+		poolInfo.poolSizeCount = 1;
+		poolInfo.pPoolSizes = &poolSize;
+		poolInfo.maxSets = 1;
+
+		if (vkCreateDescriptorPool(RendererBackend::GetDevice(), &poolInfo, nullptr, &m_DescriptorPool) != VK_SUCCESS) {
+			throw std::runtime_error("failed to create descriptor pool!");
+		}
+
+		//***************
+		//Descriptor Sets
+		VkDescriptorSetAllocateInfo allocInfo{};
+		allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+		allocInfo.descriptorPool = m_DescriptorPool;
+		allocInfo.descriptorSetCount = 1;
+		allocInfo.pSetLayouts = &m_DescriptorSetLayout;
+
+		if (vkAllocateDescriptorSets(RendererBackend::GetDevice(), &allocInfo, &m_DescriptorSet) != VK_SUCCESS) {
+			throw std::runtime_error("failed to allocate descriptor sets!");
+		}
+
+		VkDescriptorBufferInfo bufferInfo{};
+		bufferInfo.buffer = m_UniformBuffer;
+		bufferInfo.offset = 0;
+		bufferInfo.range = sizeof(UniformBufferObject);
+
+		VkWriteDescriptorSet descriptorWrite{};
+		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptorWrite.dstSet = m_DescriptorSet;
+		descriptorWrite.dstBinding = 0;
+		descriptorWrite.dstArrayElement = 0;
+		descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+		descriptorWrite.descriptorCount = 1;
+		descriptorWrite.pBufferInfo = &bufferInfo;
+
+		vkUpdateDescriptorSets(RendererBackend::GetDevice(), 1, &descriptorWrite, 0, nullptr);
+	}
+
+	void Shader::CreateUniformBuffers() {
+		VkDeviceSize bufferSize = sizeof(UniformBufferObject);
+
+
+		RendererBackend::CreateBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, m_UniformBuffer, m_UniformBuffersMemory);
+	}
+
+
+
 	void Shader::CreateGraphicsPipeline(const std::string& vertexPath, const std::string& fragmentPath)
 	{
+		
+
+
+
 		auto vertShaderCode = ReadFile(vertexPath);
 		auto fragShaderCode = ReadFile(fragmentPath);
 
@@ -94,8 +175,8 @@ namespace hyp_backend {
 
 		VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
 		pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-		pipelineLayoutInfo.setLayoutCount = 0;
-		pipelineLayoutInfo.pushConstantRangeCount = 0;
+		pipelineLayoutInfo.setLayoutCount = 1;
+		pipelineLayoutInfo.pSetLayouts = &m_DescriptorSetLayout;
 
 		if (vkCreatePipelineLayout(RendererBackend::GetDevice(), &pipelineLayoutInfo, nullptr, &m_PipelineLayout) != VK_SUCCESS)
 		{

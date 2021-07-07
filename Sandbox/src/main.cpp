@@ -46,6 +46,7 @@ int main()
 
 	while (true)
 	{
+		hypatiaRenderer->GetSceneGraph().UpdateSceneGraph();
 		hypatiaRenderer->Render();
 
 		glfwPollEvents();

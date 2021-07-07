@@ -13,4 +13,10 @@ namespace hypatia {
 			throw std::runtime_error("failed to allocate command buffers!");
 		}
 	}
+
+	void Entity::Update()
+	{
+
+	}
+
 }

@@ -43,8 +43,7 @@ namespace hyp_backend {
 		};
 
 		void Load();
-		void createVertexBuffer();
-		uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+		void CreateVertexBuffer();
 		VkBuffer GetVertexBuffer() { return m_VertexBuffer; }
 		std::vector<Vertex> GetVertexData() { return m_Vertices; }
 
