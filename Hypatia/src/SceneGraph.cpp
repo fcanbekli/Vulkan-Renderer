@@ -2,10 +2,10 @@
 
 namespace hypatia
 {
-
+	Camera* SceneGraph::m_Camera;
 	void SceneGraph::UpdateSceneGraph()
 	{
-		m_Camera.Update();
+		m_Camera->Update();
 		for (int i = 0; i < m_Entities.size(); i++)
 		{
 			m_Entities.at(i)->Update();

@@ -44,12 +44,16 @@ int main()
 	entity->m_Model = hypatiaRenderer->GetResourceLibrary().m_Models.at(0);
 	hypatiaRenderer->GetSceneGraph().addNewEntity(entity);
 
+	hypatia::Camera* camera = new hypatia::Camera();
+	hypatiaRenderer->GetSceneGraph().m_Camera = camera;
+
 	while (true)
 	{
 		hypatiaRenderer->GetSceneGraph().UpdateSceneGraph();
 		hypatiaRenderer->Render();
 
 		glfwPollEvents();
+
 	}
 
 }

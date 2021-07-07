@@ -74,10 +74,11 @@ namespace hyp_backend {
 
 			vkCmdBindIndexBuffer(m_SceneGraph->m_Entities.at(i)->m_CommandBuffer, m_SceneGraph->m_Entities.at(i)->m_Model->m_IndexBuffer, 0, VK_INDEX_TYPE_UINT16);
 
+			vkCmdBindDescriptorSets(m_SceneGraph->m_Entities.at(i)->m_CommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_SceneGraph->m_Entities.at(i)->m_Material->m_Shader->m_PipelineLayout, 0, 1, &m_SceneGraph->m_Entities.at(i)->m_Material->m_Shader->m_DescriptorSet, 0, nullptr);
+
 			vkCmdDrawIndexed(m_SceneGraph->m_Entities.at(i)->m_CommandBuffer, static_cast<uint32_t>(m_SceneGraph->m_Entities.at(i)->m_Model->m_Indices.size()), 1, 0, 0, 0);
 
-			vkCmdDraw(m_SceneGraph->m_Entities.at(i)->m_CommandBuffer, static_cast<uint32_t>(m_SceneGraph->m_Entities.at(i)->m_Model->GetVertexData().size()), 1, 0, 0);
-
+			
 			vkCmdEndRenderPass(m_SceneGraph->m_Entities.at(i)->m_CommandBuffer);
 
 			if (vkEndCommandBuffer(m_SceneGraph->m_Entities.at(i)->m_CommandBuffer) != VK_SUCCESS)

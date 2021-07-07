@@ -19,12 +19,16 @@ namespace hyp_backend {
 
 		VkPipeline m_Pipeline;
 		VkPipelineLayout m_PipelineLayout;
-	private:
+		UniformBufferObject m_UniformObject;
+
 		VkDescriptorSetLayout m_DescriptorSetLayout;
 		VkBuffer m_UniformBuffer;
 		VkDeviceMemory m_UniformBuffersMemory;
 		VkDescriptorSet m_DescriptorSet;
 		VkDescriptorPool m_DescriptorPool;
+	private:
+
+
 
 		void CreateDescriptor();
 		void CreateUniformBuffers();

@@ -1,10 +1,14 @@
 ﻿#pragma once
 #include "pch.h"
 #include "Material.h"
+#include "SceneGraph.h"
 #include "VulkanBackend/vkModel.h"
+
 namespace hypatia{
+	class SceneGraph;
 	class Entity {
 	public:
+		
 		Entity();
 		void Update();
 		Material* m_Material;
