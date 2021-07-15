@@ -51,7 +51,7 @@ int main()
 	{
 		hypatiaRenderer->GetSceneGraph().UpdateSceneGraph();
 		hypatiaRenderer->Render();
-
+		glfwWaitEvents();
 		glfwPollEvents();
 
 	}

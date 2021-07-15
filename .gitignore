@@ -13,3 +13,5 @@ build/
 out/
 .vs/
 .vscode/
+HypatiaEditor/bin
+HypatiaEditor/obj
