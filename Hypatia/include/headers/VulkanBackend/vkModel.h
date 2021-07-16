@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "pch.h"
+#include "vulkanBackend/vkBufferFactory.h"
 #include "VulkanBackend/vkRenderer.h"
 
 namespace hyp_backend {

@@ -13,6 +13,7 @@ namespace hypatia
 		void InitializePresentationSystem();
 		void CreateFrameBuffer();
 		void SyncRendererOptions(PIPELINE_DESC* pipelineDesc);
+
 		static uint32_t GetNextImage();
 		static size_t GetCurrentFrame() { return m_CurrentFrame;  }
 		static VkSwapchainKHR GetSwapChain() { return m_SwapChain; }

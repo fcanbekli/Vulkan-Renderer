@@ -49,7 +49,7 @@ namespace hyp_backend
 
 
 		static uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
-		static void CreateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
+
 	private:
 		void IntializeInstance();
 		void IntializePhysicalDevice();
