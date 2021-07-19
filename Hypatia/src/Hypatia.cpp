@@ -7,6 +7,7 @@ namespace hypatia {
 		m_FrameGraph.SetNextImage(m_PresentationSystem.GetNextImage());
 		// Build Frame
 		m_FrameGraph.BuildFrame();
+		m_FrameGraph.SubmitFrame();
 		// Present "Next Image"
 		m_PresentationSystem.PresentFrame();
 	}
@@ -22,7 +23,8 @@ namespace hypatia {
 		m_PresentationSystem.SyncRendererOptions(pipelineDesc);
 		m_PresentationSystem.InitializePresentationSystem();
 		//Render Passes
-		m_FrameGraph.InitializeRenderPasses(&m_SceneGraph);
+		m_FrameGraph.m_SceneGraph = &m_SceneGraph;
+		m_FrameGraph.InitializeRenderPasses();
 		//Framebuffer
 		m_PresentationSystem.CreateFrameBuffer();
 		//Library

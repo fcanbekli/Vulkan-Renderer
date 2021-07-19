@@ -15,7 +15,6 @@ namespace hypatia{
 		hyp_backend::Model* m_Model;
 
 		glm::mat4 m_ModelMatrix;
-		VkCommandBuffer m_CommandBuffer;
 
 		glm::vec3 m_Position;
 		glm::vec3 m_Rotation;

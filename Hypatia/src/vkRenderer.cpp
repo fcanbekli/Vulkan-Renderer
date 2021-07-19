@@ -11,7 +11,7 @@ namespace hyp_backend {
 	VkSurfaceKHR RendererBackend::m_Surface;
 	SwapChainSupportDetails RendererBackend::m_SwapChainSupportDetails;
 	RenderLayers RendererBackend::m_RenderLayers;
-
+	std::vector<VkCommandBuffer> RendererBackend::m_CommandBuffers;
 	void RendererBackend::InitalizeRendererBackend()
 	{
 		IntializeInstance();
@@ -19,6 +19,7 @@ namespace hyp_backend {
 		IntializePhysicalDevice();
 		IntializeDevice();
 		InitializeCommandPool();
+		InitializeCommandBuffer();
 	}
 
 	void RendererBackend::SyncRendererOptions(hypatia::PIPELINE_DESC* pipelineDesc)
@@ -145,6 +146,26 @@ namespace hyp_backend {
 		{
 			throw std::runtime_error("failed to create command pool!");
 		}
+	}
+
+	void RendererBackend::InitializeCommandBuffer()
+	{
+		VkCommandBuffer tempBuffer;
+		for (int i = 0; i < 3; i++)
+		{
+			VkCommandBufferAllocateInfo allocInfo{};
+			allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+			allocInfo.commandPool = hyp_backend::RendererBackend::GetCommandPool();
+			allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+			allocInfo.commandBufferCount = 1;
+
+			if (vkAllocateCommandBuffers(hyp_backend::RendererBackend::GetDevice(), &allocInfo, &tempBuffer) != VK_SUCCESS) {
+				throw std::runtime_error("failed to allocate command buffers!");
+			}
+			m_CommandBuffers.push_back(tempBuffer);
+			tempBuffer = nullptr;
+		}
+
 	}
 
 	void RendererBackend::CreateWin32Surface()

@@ -43,6 +43,7 @@ namespace hyp_backend
 
 		static VkSurfaceKHR GetSurface() { return m_Surface; }
 		static VkCommandPool GetCommandPool() { return m_CommandPool; };
+		static std::vector<VkCommandBuffer> GetCommandBuffers() { return m_CommandBuffers; };
 		static SwapChainSupportDetails GetSwapChainSupportDetails() { return m_SwapChainSupportDetails; }
 		static QueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
 		static RenderLayers m_RenderLayers;
@@ -55,6 +56,7 @@ namespace hyp_backend
 		void IntializePhysicalDevice();
 		void IntializeDevice();
 		void InitializeCommandPool();
+		void InitializeCommandBuffer();
 		void CreateWin32Surface();
 
 		bool IsDeviceSuitable(VkPhysicalDevice device);
@@ -65,6 +67,7 @@ namespace hyp_backend
 		static VkDevice m_Device;
 		static VkPhysicalDevice m_PhysicalDevice;
 		static VkCommandPool m_CommandPool;
+		static std::vector<VkCommandBuffer> m_CommandBuffers;
 		static VkQueue m_GraphicsQueue;
 		static VkQueue m_PresentQueue;
 		static VkSurfaceKHR m_Surface;

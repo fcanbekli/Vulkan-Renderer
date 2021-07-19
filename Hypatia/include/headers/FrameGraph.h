@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "SceneGraph.h"
 #include "ERenderLayer.h"
-#include "VulkanBackend/vkBaseRenderPass.h"
+#include "VulkanBackend/vkRenderer.h"
 
 namespace hypatia
 {
@@ -10,12 +10,13 @@ namespace hypatia
 	{
 	public:
 		FrameGraph(){}
-
+		
 		void BuildFrame();
-		void InitializeRenderPasses(SceneGraph* sceneGraph);
+		void SubmitFrame();
+		void InitializeRenderPasses();
 		void SetNextImage(uint32_t nextImageIndex) { this->m_NextImageIndex = nextImageIndex; }
 	
 		uint32_t m_NextImageIndex;
-		static std::vector<hyp_backend::IRenderPass*> m_RenderPasses;	
+		hypatia::SceneGraph* m_SceneGraph;	
 	};
 }			
