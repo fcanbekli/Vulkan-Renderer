@@ -8,6 +8,7 @@
 ## Why Vulkan
 
 The 3d graphics libraries that help us communicate with the graphics card have suffered many breakdowns over time. With the advent of graphics cards and shaders, graphics programming has reached new horizons. These changes caused radical mind shifts in the architecture of these libraries. Previously, they abstracted many responsibilities from the user. Now, this approach has evolved over time to give all responsibility to the user. The next-generation graphics libraries Vulkan, Metal, and DirectX12 work with this principle. This improved performance along with the reduction of driver overheads. This repo includes some experiments with Vulkan core concepts and is not a complete renderer.
+
 ![](Media/render.jpg)
 
 ## How to Use
@@ -44,3 +45,7 @@ Call UpdateSceneGraph and Render methods to update scenegraph and render scene
 hypatiaRenderer->GetSceneGraph().UpdateSceneGraph();
 hypatiaRenderer->Render();
 ```
+
+## Credits
+I would like to thank Şevki Caner Kurtnazar(https://github.com/daxPale) for his help in the development process.
+
