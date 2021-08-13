@@ -60,6 +60,7 @@ namespace hypatia
 
 		vkCmdBeginRenderPass(hyp_backend::RendererBackend::GetCommandBuffers().at(m_NextImageIndex), &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
+
 		vkCmdBindPipeline(hyp_backend::RendererBackend::GetCommandBuffers().at(m_NextImageIndex), VK_PIPELINE_BIND_POINT_GRAPHICS, m_SceneGraph->m_Entities.at(0)->m_Material->m_Shader->m_Pipeline);
 
 		VkBuffer vertexBuffers[] = { m_SceneGraph->m_Entities.at(0)->m_Model->GetVertexBuffer() };

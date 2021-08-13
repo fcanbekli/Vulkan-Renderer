@@ -4,12 +4,10 @@ namespace hypatia {
 	Entity::Entity()
 	{
 		m_Position = glm::vec3(0);
-
 	}
 
 	void Entity::Update()
 	{
-
 
 		static auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -23,17 +21,10 @@ namespace hypatia {
 		m_Material->m_Shader->m_UniformObject.proj[1][1] *= -1;
 
 
-
-
 		void* data;	
 		vkMapMemory(hyp_backend::RendererBackend::GetDevice(), m_Material->m_Shader->m_UniformBuffersMemory, 0, sizeof(m_Material->m_Shader->m_UniformObject), 0, &data);
 		memcpy(data, &m_Material->m_Shader->m_UniformObject, sizeof(m_Material->m_Shader->m_UniformObject));
 		vkUnmapMemory(hyp_backend::RendererBackend::GetDevice(), m_Material->m_Shader->m_UniformBuffersMemory);
-
-
-		
-
-
 	}
 
 }

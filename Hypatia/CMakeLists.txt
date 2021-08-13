@@ -28,7 +28,7 @@ set(RES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/res")
 include_directories( ${HEADERS_DIR} ${VENDOR_DIR})
 FILE(GLOB_RECURSE SOURCES  "${SRC_DIR}/*.cpp" "${RES_DIR}/*.glsl")
 FILE(GLOB_RECURSE INCLUDES "${HEADERS_DIR}/*.h")
-
+FILE(GLOB_RECURSE INCLUDES "${VENDOR_DIR}/*.h")
 add_library(Hypatia STATIC ${SOURCES} ${INCLUDES})
 target_precompile_headers(Hypatia PUBLIC "${HEADERS_DIR}/pch.h")
 

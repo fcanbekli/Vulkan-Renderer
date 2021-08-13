@@ -27,9 +27,6 @@ namespace hyp_backend {
 		VkDescriptorSet m_DescriptorSet;
 		VkDescriptorPool m_DescriptorPool;
 	private:
-
-
-
 		void CreateDescriptor();
 		void CreateUniformBuffers();
 		void CreateGraphicsPipeline(const std::string& vertexPath, const std::string& fragmentPath);

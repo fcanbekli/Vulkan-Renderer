@@ -22,6 +22,7 @@ private:
 	FrameGraph m_FrameGraph;
 	ResourceLibrary m_ResourceLibrary;
 	PresentationSystem m_PresentationSystem;	
+
 	PIPELINE_DESC* m_PipelineDesc;
 };
 }
