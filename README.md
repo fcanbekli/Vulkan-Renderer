@@ -47,5 +47,5 @@ hypatiaRenderer->Render();
 ```
 
 ## Credits
-I would like to thank Şevki Caner Kurtnazar(https://github.com/daxPale) for his help in the development process.
+I would like to thank Şevki Caner Kurtnazar(https://github.com/daxPale) for him helps in the development process.
 
