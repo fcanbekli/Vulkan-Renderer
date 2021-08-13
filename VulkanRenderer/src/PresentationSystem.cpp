@@ -18,7 +18,7 @@ namespace hypatia
 		CreateImageBuffer();
 	}
 
-	void PresentationSystem::SyncRendererOptions(PIPELINE_DESC* pipelineDesc)
+	void PresentationSystem::SyncRendererOptions(RENDERER_DESC* pipelineDesc)
 	{
 		m_PipelineDesc = pipelineDesc;
 

@@ -22,7 +22,7 @@ namespace hyp_backend {
 		InitializeCommandBuffer();
 	}
 
-	void RendererBackend::SyncRendererOptions(hypatia::PIPELINE_DESC* pipelineDesc)
+	void RendererBackend::SyncRendererOptions(hypatia::RENDERER_DESC* pipelineDesc)
 	{
 		this->m_PipelineDesc = pipelineDesc;
 		m_Extensions = m_PipelineDesc->extensions;

@@ -12,7 +12,7 @@ namespace hypatia {
 		m_PresentationSystem.PresentFrame();
 	}
 
-	hpyStatus Hypatia::InitializeRenderer(PIPELINE_DESC* pipelineDesc)
+	hpyStatus Hypatia::InitializeRenderer(RENDERER_DESC* pipelineDesc)
 	{
 		m_PipelineDesc = pipelineDesc;
 

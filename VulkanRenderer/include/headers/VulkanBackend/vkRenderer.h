@@ -32,7 +32,7 @@ namespace hyp_backend
 	public:
 		RendererBackend() {};
 		void InitalizeRendererBackend();
-		void SyncRendererOptions(hypatia::PIPELINE_DESC* pipelineDesc);
+		void SyncRendererOptions(hypatia::RENDERER_DESC* pipelineDesc);
 
 		static VkInstance GetInstance() { return m_Instance; }
 		static VkDevice GetDevice() { return m_Device; }
@@ -84,6 +84,6 @@ namespace hyp_backend
 		std::shared_ptr<ComputePipeline> m_computePipeline;
 		std::shared_ptr<PostPipeline> m_postPipeline;
 
-		hypatia::PIPELINE_DESC* m_PipelineDesc;
+		hypatia::RENDERER_DESC* m_PipelineDesc;
 	};
 }

@@ -12,7 +12,7 @@ namespace hypatia
 		void PresentFrame();
 		void InitializePresentationSystem();
 		void CreateFrameBuffer();
-		void SyncRendererOptions(PIPELINE_DESC* pipelineDesc);
+		void SyncRendererOptions(RENDERER_DESC* pipelineDesc);
 
 		static uint32_t GetNextImage();
 		static size_t GetCurrentFrame() { return m_CurrentFrame;  }
@@ -21,7 +21,7 @@ namespace hypatia
 		static VkFormat GetSwapChainImageFormat() { return m_SwapChainImageFormat; }
 		static VkExtent2D GetSwapChainExtent() { return m_SwapChainExtent; }
 	private:
-		PIPELINE_DESC* m_PipelineDesc;
+		RENDERER_DESC* m_PipelineDesc;
 		static uint32_t m_ImageIndex;
 		static size_t m_CurrentFrame;
 		static VkSwapchainKHR m_SwapChain;

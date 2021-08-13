@@ -11,7 +11,7 @@ namespace hypatia {
 public:
 	Hypatia() {};
 
-	hpyStatus InitializeRenderer(PIPELINE_DESC* pipelineDesc);
+	hpyStatus InitializeRenderer(RENDERER_DESC* pipelineDesc);
 	void Render();
 	ResourceLibrary GetResourceLibrary() { return m_ResourceLibrary; };
 	SceneGraph& GetSceneGraph() { return m_SceneGraph; };
@@ -23,6 +23,6 @@ private:
 	ResourceLibrary m_ResourceLibrary;
 	PresentationSystem m_PresentationSystem;	
 
-	PIPELINE_DESC* m_PipelineDesc;
+	RENDERER_DESC* m_PipelineDesc;
 };
 }

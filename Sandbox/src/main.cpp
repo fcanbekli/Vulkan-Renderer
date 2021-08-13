@@ -31,7 +31,7 @@ int main()
 
 	hypatia::Hypatia* hypatiaRenderer = new hypatia::Hypatia();
 
-	hypatia::PIPELINE_DESC pipelineDesc = {};
+	hypatia::RENDERER_DESC pipelineDesc = {};
 	pipelineDesc.hwnd = glfwGetWin32Window(window);
 	pipelineDesc.hInstance = GetModuleHandle(nullptr);
 	pipelineDesc.extensions = getRequiredExtensions();
