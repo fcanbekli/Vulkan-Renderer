@@ -31,13 +31,13 @@ int main()
 
 	hypatia::Hypatia* hypatiaRenderer = new hypatia::Hypatia();
 
-	hypatia::RENDERER_DESC pipelineDesc = {};
-	pipelineDesc.hwnd = glfwGetWin32Window(window);
-	pipelineDesc.hInstance = GetModuleHandle(nullptr);
-	pipelineDesc.extensions = getRequiredExtensions();
-	glfwGetFramebufferSize(window, &pipelineDesc.frameBufferWidth, &pipelineDesc.frameBufferHeight);
+	hypatia::RENDERER_DESC rendererDesc = {};
+	rendererDesc.hwnd = glfwGetWin32Window(window);
+	rendererDesc.hInstance = GetModuleHandle(nullptr);
+	rendererDesc.extensions = getRequiredExtensions();
+	glfwGetFramebufferSize(window, &rendererDesc.frameBufferWidth, &rendererDesc.frameBufferHeight);
 
-	hypatiaRenderer->InitializeRenderer(&pipelineDesc);
+	hypatiaRenderer->InitializeRenderer(&rendererDesc);
 
 	hypatia::Entity* entity = new hypatia::Entity();
 	entity->m_Material = hypatiaRenderer->GetResourceLibrary().m_Materials.at(0);
