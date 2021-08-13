@@ -13,7 +13,7 @@ namespace hypatia
 
 	void ResourceLibrary::LoadShaders()
 	{
-		m_Shaders.push_back(new hyp_backend::Shader("../../Hypatia/res/shaders/vertex_shader.spv", "../../Hypatia/res/shaders/fragment_shader.spv"));
+		m_Shaders.push_back(new hyp_backend::Shader("../../VulkanRenderer/res/shaders/vertex_shader.spv", "../../VulkanRenderer/res/shaders/fragment_shader.spv"));
 	}
 
 	void ResourceLibrary::LoadModels()

@@ -2,7 +2,7 @@
 # and include sub-projects here.
 #
 # enable C and C++ language
-project (Hypatia)
+project (VulkanRenderer)
 
 cmake_minimum_required (VERSION 3.8)
 
@@ -11,5 +11,5 @@ enable_testing()
 # Include sub-projects.
 add_subdirectory(googletest)
 add_subdirectory (Sandbox)
-add_subdirectory (Hypatia)
-add_subdirectory(HypatiaTest)
+add_subdirectory (VulkanRenderer)
+add_subdirectory(VulkanRendererTest)

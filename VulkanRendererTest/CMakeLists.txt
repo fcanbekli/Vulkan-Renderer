@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.8)
-set(This HypatiaTest)
+set(This VulkanRendererTest)
 
 set(CompilerFlags
         CMAKE_CXX_FLAGS
@@ -19,7 +19,7 @@ add_executable(${This} ${SOURCES})
 target_link_libraries(${This} PUBLIC
     gtest
     gtest_main
-    Hypatia
+    VulkanRenderer
 )
 
 add_test(

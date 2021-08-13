@@ -1,4 +1,4 @@
-﻿project(Hypatia)
+﻿project(VulkanRenderer)
 
 option(USE_GL "Use_GL" OFF)
 option(USE_VULKAN "USE_VULKAN" ON)
@@ -29,8 +29,8 @@ include_directories( ${HEADERS_DIR} ${VENDOR_DIR})
 FILE(GLOB_RECURSE SOURCES  "${SRC_DIR}/*.cpp" "${RES_DIR}/*.glsl")
 FILE(GLOB_RECURSE INCLUDES "${HEADERS_DIR}/*.h")
 FILE(GLOB_RECURSE INCLUDES "${VENDOR_DIR}/*.h")
-add_library(Hypatia STATIC ${SOURCES} ${INCLUDES})
-target_precompile_headers(Hypatia PUBLIC "${HEADERS_DIR}/pch.h")
+add_library(VulkanRenderer STATIC ${SOURCES} ${INCLUDES})
+target_precompile_headers(VulkanRenderer PUBLIC "${HEADERS_DIR}/pch.h")
 
 # GLFW
 set(GLFW_DIR "${LIB_DIR}/glfw")

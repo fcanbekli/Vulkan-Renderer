@@ -16,8 +16,8 @@ set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(INC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 
-set(HEADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../Hypatia/include/headers")
-set(VENDOR_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../Hypatia/include/vendor")
+set(HEADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../VulkanRenderer/include/headers")
+set(VENDOR_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../VulkanRenderer/include/vendor")
 include_directories( ${INC_DIR} ${HEADERS_DIR} ${VENDOR_DIR})
 
 #Add the given directories to those the compiler uses to search for include files.
@@ -32,4 +32,4 @@ if(MSVC)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 endif(MSVC)
 
-target_link_libraries (Sandbox Hypatia d3d11.lib)
+target_link_libraries (Sandbox VulkanRenderer d3d11.lib)
